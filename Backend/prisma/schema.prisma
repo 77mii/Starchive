@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  user_id Int      @id @default(autoincrement())
+  username String
+  password String
+  Budgets  Budget[]
+  Plans    Plans[]
+  Expenses Expenses[]
+  UserGames UserGames[]
+  HardPities HardPity[]
+  token String? @db.VarChar(100)
+}
+
+model Games {
+  game_id     Int      @id @default(autoincrement())
+  game_name   String
+  income      Float
+  description String
+  currency_name    String
+  tickets_name     String?
+  Budgets     Budget[]
+  Plans       Plans[]
+  Expenses    Expenses[]
+  Banners     Banners[]
+  UserGames   UserGames[]
+  HardPities  HardPity[]
+}
+
+model Banners {
+  banner_id   Int        @id @default(autoincrement())
+  game_id     Int
+  banner_name String
+  type        String
+  start_date  DateTime
+  end_date    DateTime
+  hard_pity   Int?
+  soft_pity   Int?
+  Items       BannerItems[]
+
+  Game Games @relation(fields: [game_id], references: [game_id])
+
+  HardPity HardPity[]
+}
+
+model Budget {
+  budget_id          Int      @id @default(autoincrement())
+  user_id            Int
+  game_id            Int
+  allocated_budget   Float
+  allocated_currency Float
+  allocated_tickets  Float
+  remaining_budget   Float
+  remaining_currency Float
+  remaining_tickets  Float
+
+  User Users @relation(fields: [user_id], references: [user_id])
+  Game Games @relation(fields: [game_id], references: [game_id])
+}
+
+model Plans {
+  plan_id          Int    @id @default(autoincrement())
+  user_id          Int
+  game_id          Int
+  plan_description String
+  plan_budget       Float
+  plan_currency    Float
+  plan_tickets     Float
+
+  User Users @relation(fields: [user_id], references: [user_id])
+  Game Games @relation(fields: [game_id], references: [game_id])
+}
+
+model Expenses {
+  expense_id      Int    @id @default(autoincrement())
+  user_id         Int
+  game_id         Int
+  spent_currency  Float
+  spent_money     Float
+  spent_tickets   Float
+
+  User Users @relation(fields: [user_id], references: [user_id])
+  Game Games @relation(fields: [game_id], references: [game_id])
+}
+
+model Items {
+  item_id   Int      @id @default(autoincrement())
+  rarity    String
+  item_name String
+  BannerItems BannerItems[]
+}
+
+model BannerItems {
+  banner_id  Int
+  item_id    Int
+  acquire_rate Float
+
+  Banner Banners @relation(fields: [banner_id], references: [banner_id])
+  Item   Items   @relation(fields: [item_id], references: [item_id])
+
+  @@id([banner_id, item_id])
+}
+
+model HardPity {
+  pity_id          Int      @id @default(autoincrement())
+  user_id          Int
+  game_id          Int
+  banner_id        Int
+  pull_towards_pity Int
+
+  User   Users   @relation(fields: [user_id], references: [user_id])
+  Game   Games   @relation(fields: [game_id], references: [game_id])
+  Banner Banners @relation(fields: [banner_id], references: [banner_id])
+}
+
+model UserGames {
+  user_id Int
+  game_id Int
+
+  User Users @relation(fields: [user_id], references: [user_id])
+  Game Games @relation(fields: [game_id], references: [game_id])
+
+  @@id([user_id, game_id])
+}

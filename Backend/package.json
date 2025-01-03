@@ -4,11 +4,32 @@
   "description": "Back end for Starchive, A budgeting tool for gacha games",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "dev": "nodemon src/main.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "mattR, Joe , Dave",
+  "author": "Matthew Regan Hadiwidjaja, Joe Alvaro, Dave Matthew Pondaag",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.2"
+    "@prisma/client": "^6.1.0",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.5",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2",
+    "uuid": "^11.0.3",
+    "winston": "^3.17.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/uuid": "^10.0.0",
+    "prisma": "^6.1.0"
   }
 }
