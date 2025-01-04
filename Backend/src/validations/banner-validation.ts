@@ -8,7 +8,8 @@ export class BannerValidation {
         start_date: z.coerce.date(),
         end_date: z.coerce.date(),
         hard_pity: z.number().min(1).optional(),
-        soft_pity: z.number().min(1).optional()
+        soft_pity: z.number().min(1).optional(),
+        image_url: z.string().url().optional()
     })
 
     static readonly UPDATE: ZodType = z.object({
@@ -17,6 +18,7 @@ export class BannerValidation {
         start_date: z.coerce.date().optional(),
         end_date: z.coerce.date().optional(),
         hard_pity: z.number().min(1).optional(),
-        soft_pity: z.number().min(1).optional()
+        soft_pity: z.number().min(1).optional(),
+        image_url: z.string().url().optional()
     })
 }

@@ -23,6 +23,7 @@ async function main() {
       description: "Open world anime game",
       currency_name: "Primogems",
       tickets_name: "Intertwined Fate",
+      image_url: "https://example.com/genshin-impact.jpg",
     },
   });
 
@@ -36,6 +37,7 @@ async function main() {
       end_date: new Date("2025-01-15T23:59:59.999Z"),
       hard_pity: 90,
       soft_pity: 75,
+      image_url: "https://example.com/new-year-banner.jpg",
     },
   });
 
@@ -59,6 +61,23 @@ async function main() {
       remaining_currency: 4000,
       remaining_tickets: 40,
     },
+  });
+
+  // Create an item
+  const item = await prisma.items.create({
+    data: {
+      rarity: "Rare",
+      item_name: "Sword of Destiny",
+      image_url: "https://example.com/sword-of-destiny.jpg",
+    },
+  });
+
+  // Create an article
+  await prisma.articles.create({
+    data: {
+      title: "Genshin Impact Tips",
+      text: "Here are some tips for playing Genshin Impact...",
+      image_url: "https://example.com/genshin-impact-tips.jpg",
   });
 
   console.log("Seed data created successfully");

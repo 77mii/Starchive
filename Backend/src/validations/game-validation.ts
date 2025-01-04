@@ -6,7 +6,8 @@ export class GameValidation {
         income: z.number().min(0),
         description: z.string().min(1),
         currency_name: z.string().min(1),
-        tickets_name: z.string().optional()
+        tickets_name: z.string().optional(),
+        image_url: z.string().url().optional()
     })
 
     static readonly UPDATE: ZodType = z.object({
@@ -14,6 +15,7 @@ export class GameValidation {
         income: z.number().min(0).optional(),
         description: z.string().min(1).optional(),
         currency_name: z.string().min(1).optional(),
-        tickets_name: z.string().optional()
+        tickets_name: z.string().optional(),
+        image_url: z.string().url().optional()
     })
 }

@@ -10,6 +10,7 @@ import { PityController } from "../controllers/pity-controller"
 import { UserGameController } from "../controllers/user-game-controller"
 import { ItemController } from "../controllers/item-controller"
 import { AnalyticsController } from "../controllers/analytics-controller"
+import { ArticleController } from "../controllers/article-controller"
 
 export const apiRouter = express.Router()
 apiRouter.use(authMiddleware)
@@ -53,3 +54,8 @@ apiRouter.get("/api/banner-items/:bannerId(\\d+)", ItemController.getByBannerId)
 apiRouter.get("/api/analytics/spending/:gameId(\\d+)", AnalyticsController.getSpendingAnalysis)
 apiRouter.get("/api/analytics/pity-history/:bannerId(\\d+)", AnalyticsController.getPityHistory)
 apiRouter.get("/api/analytics/budget-usage/:gameId(\\d+)", AnalyticsController.getBudgetUsage)
+// article
+apiRouter.post("/api/articles", ArticleController.create)
+apiRouter.get("/api/articles", ArticleController.getAll)
+apiRouter.get("/api/articles/:articleId(\\d+)", ArticleController.getById)
+apiRouter.put("/api/articles/:articleId(\\d+)", ArticleController.update)

@@ -3,12 +3,14 @@ import { Items, BannerItems } from "@prisma/client"
 export interface CreateItemRequest {
     rarity: string
     item_name: string
+    image_url?: string
 }
 
 export interface ItemResponse {
     item_id: number
     rarity: string
     item_name: string
+    image_url: string | null
 }
 
 export interface BannerItemResponse {
@@ -21,7 +23,8 @@ export function toItemResponse(item: Items): ItemResponse {
     return {
         item_id: item.item_id,
         rarity: item.rarity,
-        item_name: item.item_name
+        item_name: item.item_name,
+        image_url: item.image_url
     }
 }
 

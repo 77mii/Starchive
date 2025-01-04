@@ -1,5 +1,3 @@
-
-
 package com.visprog.starchive.views
 
 import android.os.Build

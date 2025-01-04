@@ -8,6 +8,7 @@ export interface CreateBannerRequest {
     end_date: Date
     hard_pity?: number
     soft_pity?: number
+    image_url?: string
 }
 
 export interface BannerResponse {
@@ -19,6 +20,7 @@ export interface BannerResponse {
     end_date: Date
     hard_pity: number | null
     soft_pity: number | null
+    image_url: string | null
 }
 
 export function toBannerResponse(banner: Banners): BannerResponse {
@@ -30,6 +32,7 @@ export function toBannerResponse(banner: Banners): BannerResponse {
         start_date: banner.start_date,
         end_date: banner.end_date,
         hard_pity: banner.hard_pity,
-        soft_pity: banner.soft_pity
+        soft_pity: banner.soft_pity,
+        image_url: banner.image_url
     }
 }

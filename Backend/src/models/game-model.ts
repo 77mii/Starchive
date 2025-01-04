@@ -6,6 +6,7 @@ export interface CreateGameRequest {
     description: string
     currency_name: string
     tickets_name?: string
+    image_url?: string
 }
 
 export interface GameResponse {
@@ -15,6 +16,7 @@ export interface GameResponse {
     description: string
     currency_name: string
     tickets_name: string | null
+    image_url: string | null
 }
 
 export function toGameResponse(game: Games): GameResponse {
@@ -24,6 +26,7 @@ export function toGameResponse(game: Games): GameResponse {
         income: game.income,
         description: game.description,
         currency_name: game.currency_name,
-        tickets_name: game.tickets_name
+        tickets_name: game.tickets_name,
+        image_url: game.image_url
     }
 }
