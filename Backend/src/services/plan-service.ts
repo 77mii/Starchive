@@ -42,4 +42,23 @@ export class PlanService {
     
         return plans.map(plan => toPlanResponse(plan))
     }
+
+    static async delete(user: Users, planId: number): Promise<void> {
+        const plan = await prismaClient.plans.findUnique({
+            where: {
+                plan_id: planId,
+                user_id: user.user_id
+            }
+        })
+
+        if (!plan) {
+            throw new ResponseError(404, "Plan not found")
+        }
+
+        await prismaClient.plans.delete({
+            where: {
+                plan_id: planId
+            }
+        })
+    }
 }

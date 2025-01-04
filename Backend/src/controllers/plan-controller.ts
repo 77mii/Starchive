@@ -28,4 +28,17 @@ export class PlanController {
             next(error)
         }
     }
+
+    static async delete(req: UserRequest, res: Response, next: NextFunction) {
+        try {
+            const planId = parseInt(req.params.planId)
+            await PlanService.delete(req.user!, planId)
+
+            res.status(200).json({
+                message: "Plan deleted successfully"
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
 }

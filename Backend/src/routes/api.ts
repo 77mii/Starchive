@@ -11,7 +11,6 @@ import { UserGameController } from "../controllers/user-game-controller"
 import { ItemController } from "../controllers/item-controller"
 import { AnalyticsController } from "../controllers/analytics-controller"
 
-
 export const apiRouter = express.Router()
 apiRouter.use(authMiddleware)
 // user
@@ -19,6 +18,7 @@ apiRouter.post("/api/logout", UserController.logout)
 // plan
 apiRouter.post("/api/plans", PlanController.create)
 apiRouter.get("/api/plans", PlanController.getByUserId)
+apiRouter.delete("/api/plans/:planId(\\d+)", PlanController.delete)
 // game
 apiRouter.post("/api/games", GameController.create)
 apiRouter.get("/api/games", GameController.getAll)
@@ -53,10 +53,3 @@ apiRouter.get("/api/banner-items/:bannerId(\\d+)", ItemController.getByBannerId)
 apiRouter.get("/api/analytics/spending/:gameId(\\d+)", AnalyticsController.getSpendingAnalysis)
 apiRouter.get("/api/analytics/pity-history/:bannerId(\\d+)", AnalyticsController.getPityHistory)
 apiRouter.get("/api/analytics/budget-usage/:gameId(\\d+)", AnalyticsController.getBudgetUsage)
-
-// apiRouter.get("/api/todo-list", TodoController.getAllTodos)
-// apiRouter.post("/api/todo-list", TodoController.createTodo)
-// \\d+ means regex to only allow digit as url param
-// apiRouter.get("/api/todo-list/:todoId(\\d+)", TodoController.getTodo)
-// apiRouter.put("/api/todo-list/:todoId(\\d+)", TodoController.updateTodo)
-// apiRouter.delete("/api/todo-list/:todoId(\\d+)", TodoController.deleteTodo)
