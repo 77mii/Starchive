@@ -25,16 +25,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.visprog.starchive.R
-import com.visprog.starchive.models.Banner
-import com.visprog.starchive.models.BannerItem
 import com.visprog.starchive.viewmodels.MainViewModel
-import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PullSimSelection(navController: NavController) {
     val viewModel: MainViewModel = viewModel()
-    val banners = viewModel.banners
+    val banners = viewModel.bannerModels
 
     Column(
         modifier = Modifier

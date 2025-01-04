@@ -3,13 +3,13 @@ package com.visprog.starchive.viewmodels
 
 
 import androidx.lifecycle.ViewModel
-import com.visprog.starchive.models.BannerItem
+import com.visprog.starchive.models.BannerItemModel
 
 class BannerItemViewModel : ViewModel() {
-    var bannerItems: List<BannerItem> = emptyList()
+    var bannerItemModels: List<BannerItemModel> = emptyList()
         private set
 
-    fun setBannerItems(items: List<BannerItem>) {
-        bannerItems = items
+    fun setBannerItems(items: List<BannerItemModel>) {
+        bannerItemModels = items
     }
 }

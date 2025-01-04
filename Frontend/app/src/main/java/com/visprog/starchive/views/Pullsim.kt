@@ -29,19 +29,19 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.visprog.starchive.R
-import com.visprog.starchive.models.Banner
-import com.visprog.starchive.models.BannerItem
-import com.visprog.starchive.models.User
+import com.visprog.starchive.models.BannerModel
+import com.visprog.starchive.models.BannerItemModel
+import com.visprog.starchive.models.UserModel
 import com.visprog.starchive.viewmodels.PullsimHistoryViewModel
 import com.visprog.starchive.viewmodels.PullsimViewModel
 import com.visprog.starchive.viewmodels.PullsimViewModelFactory
 import java.time.LocalDate
 
-data class PullResult(val item: BannerItem, val rarity: Int)
+data class PullResult(val item: BannerItemModel, val rarity: Int)
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Pullsim(banner: Banner, navController: NavController, pullsimHistoryViewModel: PullsimHistoryViewModel) {
+fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHistoryViewModel: PullsimHistoryViewModel) {
     val context = LocalContext.current
     val activity = context as? Activity
 
@@ -52,7 +52,7 @@ fun Pullsim(banner: Banner, navController: NavController, pullsimHistoryViewMode
         }
     }
 
-    val user = User(
+    val userModel = UserModel(
         id = 1,
         username = "testuser",
         password = "password",
@@ -122,13 +122,13 @@ fun Pullsim(banner: Banner, navController: NavController, pullsimHistoryViewMode
                         .align(Alignment.BottomCenter)
                 ) {
                     Text(
-                        text = banner.name,
+                        text = bannerModel.name,
                         color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = banner.type,
+                        text = bannerModel.type,
                         color = Color.White,
                         fontSize = 14.sp
                     )
@@ -139,7 +139,7 @@ fun Pullsim(banner: Banner, navController: NavController, pullsimHistoryViewMode
                             .fillMaxWidth()
                     ) {
                         Button(
-                            onClick = { viewModel.simulatePull(banner, user) },
+                            onClick = { viewModel.simulatePull(bannerModel, userModel) },
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFCA311))
                         ) {
                             Text(
@@ -149,7 +149,7 @@ fun Pullsim(banner: Banner, navController: NavController, pullsimHistoryViewMode
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
-                            onClick = { viewModel.simulateMultiplePulls(banner, user, 10) },
+                            onClick = { viewModel.simulateMultiplePulls(bannerModel, userModel, 10) },
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFCA311))
                         ) {
                             Text(
@@ -226,7 +226,7 @@ fun Pullsim(banner: Banner, navController: NavController, pullsimHistoryViewMode
 @Composable
 @Preview(showBackground = true, showSystemUi = true, device = "spec:width=411dp,height=731dp,dpi=420,isRound=false,chinSize=0dp,orientation=landscape")
 fun PullsimPreview() {
-    val banner = Banner(
+    val bannerModel = BannerModel(
         id = 1,
         gameId = 1,
         name = "Example Banner",
@@ -235,11 +235,11 @@ fun PullsimPreview() {
         endDate = LocalDate.now().plusDays(30),
         softPity = 75,
         items = listOf(
-            BannerItem(1, 1, "5", "The Long Voyage Home", 0.6f),
-            BannerItem(2, 1, "4", "Uncommon Item 1", 5.1f),
-            BannerItem(3, 1, "3", "Common Item 1", 94.3f)
+            BannerItemModel(1, 1, "5", "The Long Voyage Home", 0.6f),
+            BannerItemModel(2, 1, "4", "Uncommon Item 1", 5.1f),
+            BannerItemModel(3, 1, "3", "Common Item 1", 94.3f)
         )
     )
     val pullsimHistoryViewModel: PullsimHistoryViewModel = viewModel()
-    Pullsim(banner, NavController(LocalContext.current), pullsimHistoryViewModel)
+    Pullsim(bannerModel, NavController(LocalContext.current), pullsimHistoryViewModel)
 }

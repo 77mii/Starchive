@@ -1,6 +1,6 @@
 package com.visprog.starchive.models
 
-data class BannerItem(
+data class BannerItemModel(
     val bannerId: Int,
     val id: Int,
     val rarity: String,

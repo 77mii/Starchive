@@ -66,7 +66,7 @@ fun StarchiveApp() {
                         arguments = listOf(navArgument("bannerId") { type = NavType.IntType })
                     ) { backStackEntry ->
                         val bannerId = backStackEntry.arguments?.getInt("bannerId")
-                        val banner = mainViewModel.banners.find { it.id == bannerId }
+                        val banner = mainViewModel.bannerModels.find { it.id == bannerId }
                         if (banner != null) {
                             Pullsim(banner, navController, pullsimHistoryViewModel)
                         }

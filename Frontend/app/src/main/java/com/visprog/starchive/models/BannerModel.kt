@@ -2,7 +2,7 @@ package com.visprog.starchive.models
 
 import java.time.LocalDate
 
-data class Banner(
+data class BannerModel(
     val id: Int,
     val gameId: Int,
     val name: String,
@@ -10,7 +10,7 @@ data class Banner(
     val startDate: LocalDate,
     val endDate: LocalDate,
     val softPity: Int?,
-    val items: List<BannerItem>
+    val items: List<BannerItemModel>
 )
 
 

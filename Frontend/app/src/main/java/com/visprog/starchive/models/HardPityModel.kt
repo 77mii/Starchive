@@ -1,6 +1,6 @@
 package com.visprog.starchive.models
 
-data class HardPity(
+data class HardPityModel(
     val pityId: Int,
     val userId: Int,
     val gameId: Int?,
