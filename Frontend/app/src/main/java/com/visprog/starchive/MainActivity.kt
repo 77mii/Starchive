@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun StarchiveApp() {
-    StarchiveTheme {
+    StarchiveTheme(dynamicColor = false) {
         val navController = rememberNavController()
         val mainViewModel: MainViewModel = viewModel()
         val pullsimHistoryViewModel: PullsimHistoryViewModel = viewModel()

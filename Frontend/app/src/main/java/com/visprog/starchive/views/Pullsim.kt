@@ -32,6 +32,7 @@ import com.visprog.starchive.R
 import com.visprog.starchive.models.BannerModel
 import com.visprog.starchive.models.BannerItemModel
 import com.visprog.starchive.models.UserModel
+import com.visprog.starchive.ui.theme.StarchiveTheme
 import com.visprog.starchive.viewmodels.PullsimHistoryViewModel
 import com.visprog.starchive.viewmodels.PullsimViewModel
 import com.visprog.starchive.viewmodels.PullsimViewModelFactory
@@ -53,11 +54,15 @@ fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHisto
     }
 
     val userModel = UserModel(
-        id = 1,
+        userId = 1,
         username = "testuser",
         password = "password",
-        money = 100.0,
-        games = listOf()
+        budgets = listOf(),
+        plans = listOf(),
+        expenses = listOf(),
+        userGames = listOf(),
+        hardPities = listOf(),
+        token = "token"
     )
 
     val viewModel: PullsimViewModel = viewModel(factory = PullsimViewModelFactory(pullsimHistoryViewModel))
@@ -65,7 +70,7 @@ fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHisto
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF14213D)),
+            .background(MaterialTheme.colorScheme.primary),
         contentAlignment = Alignment.Center
     ) {
         Row(
@@ -86,7 +91,7 @@ fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHisto
                         .padding(top = 36.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .size(100.dp)
-                        .background(Color(0xFFE6E0D0)),
+                        .background(MaterialTheme.colorScheme.secondary),
                     contentAlignment = Alignment.Center
                 ) {
                     IconButton(onClick = { navController.navigateUp() }) {
@@ -144,17 +149,17 @@ fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHisto
                         ) {
                             Text(
                                 text = "1x Pull",
-                                color = Color(0xFF14213D)
+                                color = MaterialTheme.colorScheme.primary
                             )
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
                             onClick = { viewModel.simulateMultiplePulls(bannerModel, userModel, 10) },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFCA311))
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
                         ) {
                             Text(
                                 text = "10x Pull",
-                                color = Color(0xFF14213D)
+                                color = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
@@ -173,7 +178,7 @@ fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHisto
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
                         .size(100.dp)
-                        .background(Color(0xFFE6E0D0)),
+                        .background(MaterialTheme.colorScheme.secondary),
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
@@ -188,7 +193,7 @@ fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHisto
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
                         .size(100.dp)
-                        .background(Color(0xFFE6E0D0))
+                        .background(MaterialTheme.colorScheme.secondary)
                         .clickable {
                             navController.navigate("pullsimhistory")
                         },
@@ -241,5 +246,7 @@ fun PullsimPreview() {
         )
     )
     val pullsimHistoryViewModel: PullsimHistoryViewModel = viewModel()
-    Pullsim(bannerModel, NavController(LocalContext.current), pullsimHistoryViewModel)
+    StarchiveTheme(dynamicColor = false) {
+        Pullsim(bannerModel, NavController(LocalContext.current), pullsimHistoryViewModel)
+    }
 }

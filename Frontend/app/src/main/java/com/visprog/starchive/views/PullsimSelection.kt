@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.visprog.starchive.R
+import com.visprog.starchive.ui.theme.StarchiveTheme
 import com.visprog.starchive.viewmodels.MainViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -36,7 +37,7 @@ fun PullSimSelection(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFE6E0D0)),
+            .background(MaterialTheme.colorScheme.secondary),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -104,7 +105,7 @@ fun PullSimSelection(navController: NavController) {
                 ) {
                     Text(
                         text = "PULL SIM",
-                        color = Color(0xFF14213D),
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -168,5 +169,7 @@ fun PullSimSelection(navController: NavController) {
 @Preview(showBackground = true, showSystemUi = true)
 fun PullSimSelectionPreview() {
     val navController = rememberNavController()
-    PullSimSelection(navController = navController)
+    StarchiveTheme (dynamicColor = false) {
+        PullSimSelection(navController = navController)
+    }
 }
