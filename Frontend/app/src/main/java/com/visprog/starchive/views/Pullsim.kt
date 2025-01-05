@@ -67,6 +67,13 @@ fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHisto
 
     val viewModel: PullsimViewModel = viewModel(factory = PullsimViewModelFactory(pullsimHistoryViewModel))
 
+    val hardPityModel by viewModel.hardPityModel.collectAsState()
+    val pullsTowardsPity = hardPityModel.pullsTowardsPity
+    val hardPityThreshold = 90
+    val remainingPullsToHardPity = hardPityThreshold - pullsTowardsPity
+
+    val highestRarityChance by remember { derivedStateOf { viewModel.getHighestRarityChance(bannerModel) } }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -137,30 +144,47 @@ fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHisto
                         color = Color.White,
                         fontSize = 14.sp
                     )
+                    Text(
+                        text = "Pulls needed to reach hard pity: $remainingPullsToHardPity",
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                     Row(
-                        horizontalArrangement = Arrangement.End,
+                        horizontalArrangement = Arrangement.SpaceBetween,
                         modifier = Modifier
                             .padding(top = 8.dp)
                             .fillMaxWidth()
                     ) {
-                        Button(
-                            onClick = { viewModel.simulatePull(bannerModel, userModel) },
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFCA311))
-                        ) {
-                            Text(
-                                text = "1x Pull",
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Button(
-                            onClick = { viewModel.simulateMultiplePulls(bannerModel, userModel, 10) },
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
-                        ) {
-                            Text(
-                                text = "10x Pull",
-                                color = MaterialTheme.colorScheme.primary
-                            )
+                        Text(
+                            text = "Highest Rarity Chance: ${"%.2f".format(highestRarityChance)}%",
+                            color = Color.White,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Row {
+                            val singlePullTextColor = if (pullsTowardsPity + 1 >= hardPityThreshold) Color.White else MaterialTheme.colorScheme.primary
+                            val tenPullTextColor = if (pullsTowardsPity + 10 >= hardPityThreshold) Color.White else MaterialTheme.colorScheme.primary
+
+                            Button(
+                                onClick = { viewModel.simulatePull(bannerModel, userModel) },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFCA311))
+                            ) {
+                                Text(
+                                    text = "1x Pull",
+                                    color = singlePullTextColor
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Button(
+                                onClick = { viewModel.simulateMultiplePulls(bannerModel, userModel, 10) },
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
+                            ) {
+                                Text(
+                                    text = "10x Pull",
+                                    color = tenPullTextColor
+                                )
+                            }
                         }
                     }
                 }
@@ -226,7 +250,6 @@ fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHisto
         }
     }
 }
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview(showBackground = true, showSystemUi = true, device = "spec:width=411dp,height=731dp,dpi=420,isRound=false,chinSize=0dp,orientation=landscape")

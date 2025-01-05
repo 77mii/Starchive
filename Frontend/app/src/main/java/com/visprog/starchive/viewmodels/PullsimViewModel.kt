@@ -189,4 +189,10 @@ class PullsimViewModel(
 
         return PullResult(item, rarity) to newFirstRarityAcquired
     }
+    fun getHighestRarityChance(bannerModel: BannerModel): Double {
+        val pullsTowardsPity = _hardPityModel.value.pullsTowardsPity + 1
+        val softPityThreshold = bannerModel.softPity ?: 75
+        val softPityIncrement = if (pullsTowardsPity >= softPityThreshold) 0.5 else 0.0
+        return 0.6 + softPityIncrement
+    }
 }
