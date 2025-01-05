@@ -1,81 +1,209 @@
+package com.example.signuplogin
 
-
-
-package com.visprog.starchive
-
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.core.view.WindowCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.visprog.starchive.ui.theme.StarchiveTheme
-import com.visprog.starchive.viewmodels.MainViewModel
-import com.visprog.starchive.viewmodels.PullsimHistoryViewModel
-import com.visprog.starchive.views.PullSimSelection
-import com.visprog.starchive.views.Pullsim
-import com.visprog.starchive.views.PullsimHistory
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+
+val dummyUsers = mutableListOf<Pair<String, String>>()
 
 class MainActivity : ComponentActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            StarchiveApp()
+            MaterialTheme {
+                AppNavigator()
+            }
         }
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun StarchiveApp() {
-    StarchiveTheme(dynamicColor = false) {
-        val navController = rememberNavController()
-        val mainViewModel: MainViewModel = viewModel()
-        val pullsimHistoryViewModel: PullsimHistoryViewModel = viewModel()
-        Scaffold(
-            modifier = Modifier
-                .windowInsetsPadding(
-                    WindowInsets.systemBars.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top)
-                )
-        ) { innerPadding ->
-            Box(modifier = Modifier.padding(innerPadding)) {
-                NavHost(navController, startDestination = "pullsimselection") {
-                    composable("pullsimselection") {
-                        PullSimSelection(navController)
+fun AppNavigator() {
+    var currentScreen by remember { mutableStateOf("SplashScreen") }
+
+    when (currentScreen) {
+        "SplashScreen" -> SplashScreen { currentScreen = "Login" }
+        "Login" -> AuthApp()
+    }
+}
+
+@Composable
+fun SplashScreen(onTimeout: () -> Unit) {
+    LaunchedEffect(Unit) {
+        delay(3000)
+        onTimeout()
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF121212)),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "App Logo",
+            modifier = Modifier.size(200.dp)
+        )
+    }
+}
+
+@Composable
+fun AuthApp() {
+    var currentScreen by remember { mutableStateOf("Login") }
+
+    when (currentScreen) {
+        "Login" -> LoginScreen(onNavigateToSignUp = { currentScreen = "SignUp" }, onLoginSuccess = { currentScreen = "GameSelection" })
+        "SignUp" -> SignUpScreen(onNavigateToLogin = { currentScreen = "Login" })
+        "GameSelection" -> GameSelectionScreen()
+    }
+}
+
+@Composable
+fun LoginScreen(onNavigateToSignUp: () -> Unit, onLoginSuccess: () -> Unit) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Login", style = MaterialTheme.typography.headlineMedium)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            modifier = Modifier.fillMaxWidth(),
+            visualTransformation = PasswordVisualTransformation()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (errorMessage.isNotEmpty()) {
+            Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        Button(
+            onClick = {
+                if (dummyUsers.any { it.first == email && it.second == password }) {
+                    onLoginSuccess()
+                } else {
+                    errorMessage = "Invalid email or password!"
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Login")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextButton(onClick = onNavigateToSignUp) {
+            Text("Don't have an account? Sign Up")
+        }
+    }
+}
+
+@Composable
+fun SignUpScreen(onNavigateToLogin: () -> Unit) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Sign Up", style = MaterialTheme.typography.headlineMedium)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            modifier = Modifier.fillMaxWidth(),
+            visualTransformation = PasswordVisualTransformation()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextField(
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
+            label = { Text("Confirm Password") },
+            modifier = Modifier.fillMaxWidth(),
+            visualTransformation = PasswordVisualTransformation()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (errorMessage.isNotEmpty()) {
+            Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        Button(
+            onClick = {
+                when {
+                    email.isBlank() || password.isBlank() || confirmPassword.isBlank() -> {
+                        errorMessage = "All fields are required!"
                     }
-                    composable(
-                        "pullsim/{bannerId}",
-                        arguments = listOf(navArgument("bannerId") { type = NavType.IntType })
-                    ) { backStackEntry ->
-                        val bannerId = backStackEntry.arguments?.getInt("bannerId")
-                        val banner = mainViewModel.bannerModels.find { it.id == bannerId }
-                        if (banner != null) {
-                            Pullsim(banner, navController, pullsimHistoryViewModel)
-                        }
+                    password != confirmPassword -> {
+                        errorMessage = "Passwords do not match!"
                     }
-                    composable("pullsimhistory") {
-                        PullsimHistory(navController, pullsimHistoryViewModel)
+                    dummyUsers.any { it.first == email } -> {
+                        errorMessage = "Email is already registered!"
+                    }
+                    else -> {
+                        dummyUsers.add(email to password)
+                        errorMessage = "Sign-Up Successful!"
+                        onNavigateToLogin()
                     }
                 }
-            }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Sign Up")
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+
+        TextButton(onClick = onNavigateToLogin) {
+            Text("Already have an account? Login")
         }
     }
 }
