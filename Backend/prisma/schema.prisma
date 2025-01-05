@@ -39,6 +39,7 @@ model Games {
   Banners       Banners[]
   UserGames     UserGames[]
   HardPities    HardPity[]
+  Articles      Articles[]
 }
 
 model Banners {
@@ -144,4 +145,8 @@ model Articles {
   title      String
   text       String
   image_url  String?
+  game_id     Int
+  createdDate DateTime @default(now())
+
+  Game Games @relation(fields: [game_id], references: [game_id])
 }

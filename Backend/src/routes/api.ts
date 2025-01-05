@@ -28,6 +28,7 @@ apiRouter.put("/api/games/:gameId(\\d+)", GameController.update)
 // budget
 apiRouter.post("/api/budgets", BudgetController.create)
 apiRouter.get("/api/budgets", BudgetController.getByUserId)
+apiRouter.get("/api/budgets/:gameId(\\d+)", BudgetController.getByUserIdAndGameId)
 apiRouter.put("/api/budgets/:budgetId(\\d+)", BudgetController.update)
 // expense
 apiRouter.post("/api/expenses", ExpenseController.create)
@@ -58,4 +59,5 @@ apiRouter.get("/api/analytics/budget-usage/:gameId(\\d+)", AnalyticsController.g
 apiRouter.post("/api/articles", ArticleController.create)
 apiRouter.get("/api/articles", ArticleController.getAll)
 apiRouter.get("/api/articles/:articleId(\\d+)", ArticleController.getById)
+apiRouter.get("/api/articles/game/:gameId(\\d+)", ArticleController.getByGameId)
 apiRouter.put("/api/articles/:articleId(\\d+)", ArticleController.update)

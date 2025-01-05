@@ -52,7 +52,7 @@ class BudgetService {
             return budgets.map(budget => (0, budget_model_1.toBudgetResponse)(budget));
         });
     }
-    static getByGameId(user, gameId) {
+    static getByUserIdAndGameId(user, gameId) {
         return __awaiter(this, void 0, void 0, function* () {
             const budget = yield database_1.prismaClient.budget.findFirst({
                 where: {

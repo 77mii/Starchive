@@ -8,6 +8,7 @@ function toGameResponse(game) {
         income: game.income,
         description: game.description,
         currency_name: game.currency_name,
-        tickets_name: game.tickets_name
+        tickets_name: game.tickets_name,
+        image_url: game.image_url
     };
 }

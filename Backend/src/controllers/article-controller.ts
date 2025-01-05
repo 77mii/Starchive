@@ -39,6 +39,18 @@ export class ArticleController {
         }
     }
 
+    static async getByGameId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const gameId = parseInt(req.params.gameId)
+            const response = await ArticleService.getByGameId(gameId)
+            res.status(200).json({
+                data: response
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
     static async update(req: Request, res: Response, next: NextFunction) {
         try {
             const articleId = parseInt(req.params.articleId)

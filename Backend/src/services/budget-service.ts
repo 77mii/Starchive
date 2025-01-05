@@ -45,7 +45,7 @@ export class BudgetService {
         return budgets.map(budget => toBudgetResponse(budget))
     }
 
-    static async getByGameId(user: Users, gameId: number): Promise<BudgetResponse> {
+    static async getByUserIdAndGameId(user: Users, gameId: number): Promise<BudgetResponse> {
         const budget = await prismaClient.budget.findFirst({
             where: {
                 user_id: user.user_id,

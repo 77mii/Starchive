@@ -33,6 +33,16 @@ export class ArticleService {
         return toArticleResponse(article)
     }
 
+    static async getByGameId(gameId: number): Promise<ArticleResponse[]> {
+        const articles = await prismaClient.articles.findMany({
+            where: {
+                game_id: gameId
+            }
+        })
+
+        return articles.map(article => toArticleResponse(article))
+    }
+
     static async update(articleId: number, request: Partial<CreateArticleRequest>): Promise<ArticleResponse> {
         const updateRequest = Validation.validate(ArticleValidation.UPDATE, request)
 

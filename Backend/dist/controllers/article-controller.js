@@ -9,14 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BudgetController = void 0;
-const budget_service_1 = require("../services/budget-service");
-class BudgetController {
+exports.ArticleController = void 0;
+const article_service_1 = require("../services/article-service");
+class ArticleController {
     static create(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const request = req.body;
-                const response = yield budget_service_1.BudgetService.create(req.user, request);
+                const response = yield article_service_1.ArticleService.create(request);
                 res.status(200).json({
                     data: response
                 });
@@ -26,10 +26,10 @@ class BudgetController {
             }
         });
     }
-    static getByUserId(req, res, next) {
+    static getAll(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield budget_service_1.BudgetService.getByUserId(req.user);
+                const response = yield article_service_1.ArticleService.getAll();
                 res.status(200).json({
                     data: response
                 });
@@ -39,11 +39,25 @@ class BudgetController {
             }
         });
     }
-    static getByUserIdAndGameId(req, res, next) {
+    static getById(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const articleId = parseInt(req.params.articleId);
+                const response = yield article_service_1.ArticleService.getById(articleId);
+                res.status(200).json({
+                    data: response
+                });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
+    static getByGameId(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const gameId = parseInt(req.params.gameId);
-                const response = yield budget_service_1.BudgetService.getByUserIdAndGameId(req.user, gameId);
+                const response = yield article_service_1.ArticleService.getByGameId(gameId);
                 res.status(200).json({
                     data: response
                 });
@@ -56,9 +70,9 @@ class BudgetController {
     static update(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const budgetId = parseInt(req.params.budgetId);
+                const articleId = parseInt(req.params.articleId);
                 const request = req.body;
-                const response = yield budget_service_1.BudgetService.update(req.user, budgetId, request);
+                const response = yield article_service_1.ArticleService.update(articleId, request);
                 res.status(200).json({
                     data: response
                 });
@@ -69,4 +83,4 @@ class BudgetController {
         });
     }
 }
-exports.BudgetController = BudgetController;
+exports.ArticleController = ArticleController;

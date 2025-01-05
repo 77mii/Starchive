@@ -16,6 +16,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.visprog.starchive.R
+import kotlin.collections.listOf as listOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,8 +63,8 @@ fun GameSelectionScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         val games = listOf(
-            Pair("Honkai: Star Rail", R.drawable.honkaistarrail),
-            Pair("Arknights", R.drawable.arknights)
+            Pair("Honkai: Star Rail", R.drawable.ic_launcher_background),
+            Pair("Arknights", R.drawable.ic_launcher_background)
         )
 
         Row(
