@@ -78,6 +78,7 @@ async function main() {
       title: "Genshin Impact Tips",
       text: "Here are some tips for playing Genshin Impact...",
       image_url: "https://example.com/genshin-impact-tips.jpg",
+    },
   });
 
   console.log("Seed data created successfully");

@@ -118,16 +118,16 @@ class PullsimViewModel(
     private val _hardPityModel = MutableStateFlow(HardPityModel(1, 1, 1, 1, 0))
     val hardPityModel: StateFlow<HardPityModel> = _hardPityModel
 
-    private val _firstRarity5Acquired = MutableStateFlow(false)
-    val firstRarity5Acquired: StateFlow<Boolean> = _firstRarity5Acquired
+    private val _firstRarityAcquired = MutableStateFlow(false)
+    val firstRarityAcquired: StateFlow<Boolean> = _firstRarityAcquired
 
     fun simulatePull(bannerModel: BannerModel, userModel: UserModel) {
         viewModelScope.launch {
-            val (result, newFirstRarity5Acquired) = simulatePull(bannerModel, userModel, _hardPityModel.value, _firstRarity5Acquired.value)
+            val (result, newFirstRarityAcquired) = simulatePull(bannerModel, userModel, _hardPityModel.value, _firstRarityAcquired.value)
             _results.value = _results.value + result
-            _firstRarity5Acquired.value = newFirstRarity5Acquired
+            _firstRarityAcquired.value = newFirstRarityAcquired
             pullsimHistoryViewModel.addPullResult(result)
-            if (result.rarity == 5) {
+            if (result.rarity == bannerModel.items.maxOf { it.rarity.toInt() }) {
                 _hardPityModel.value = _hardPityModel.value.copy(pullsTowardsPity = 0)
             } else {
                 _hardPityModel.value = _hardPityModel.value.copy(pullsTowardsPity = _hardPityModel.value.pullsTowardsPity + 1)
@@ -137,57 +137,56 @@ class PullsimViewModel(
 
     fun simulateMultiplePulls(bannerModel: BannerModel, userModel: UserModel, numberOfPulls: Int) {
         viewModelScope.launch {
-            var newFirstRarity5Acquired = _firstRarity5Acquired.value
+            var newFirstRarityAcquired = _firstRarityAcquired.value
             repeat(numberOfPulls) {
-                val (result, updatedFirstRarity5Acquired) = simulatePull(bannerModel, userModel, _hardPityModel.value, newFirstRarity5Acquired)
+                val (result, updatedFirstRarityAcquired) = simulatePull(bannerModel, userModel, _hardPityModel.value, newFirstRarityAcquired)
                 _results.value = _results.value + result
-                newFirstRarity5Acquired = updatedFirstRarity5Acquired
+                newFirstRarityAcquired = updatedFirstRarityAcquired
                 pullsimHistoryViewModel.addPullResult(result)
-                if (result.rarity == 5) {
+                if (result.rarity == bannerModel.items.maxOf { it.rarity.toInt() }) {
                     _hardPityModel.value = _hardPityModel.value.copy(pullsTowardsPity = 0)
                 } else {
                     _hardPityModel.value = _hardPityModel.value.copy(pullsTowardsPity = _hardPityModel.value.pullsTowardsPity + 1)
                 }
             }
-            _firstRarity5Acquired.value = newFirstRarity5Acquired
+            _firstRarityAcquired.value = newFirstRarityAcquired
         }
     }
 
-    private fun simulatePull(bannerModel: BannerModel, userModel: UserModel, hardPityModel: HardPityModel, firstRarity5Acquired: Boolean): Pair<PullResult, Boolean> {
+    private fun simulatePull(bannerModel: BannerModel, userModel: UserModel, hardPityModel: HardPityModel, firstRarityAcquired: Boolean): Pair<PullResult, Boolean> {
         val pullsTowardsPity = hardPityModel.pullsTowardsPity + 1
         val hardPityThreshold = 90
         val softPityThreshold = bannerModel.softPity ?: 75
         val softPityIncrement = if (pullsTowardsPity >= softPityThreshold) 0.5 else 0.0
 
-        val rarity5Items = bannerModel.items.filter { it.rarity == "5" }
-        val rarity4Items = bannerModel.items.filter { it.rarity == "4" }
-        val rarity3Items = bannerModel.items.filter { it.rarity == "3" }
+        val highestRarity = bannerModel.items.maxOf { it.rarity.toInt() }
+        val rarityItems = bannerModel.items.groupBy { it.rarity.toInt() }
 
         val randomValue = Random.nextDouble(100.0)
-        val rarity5Chance = 0.6 + softPityIncrement
-        val rarity4Chance = 5.1
-        val rarity3Chance = 100.0 - rarity5Chance - rarity4Chance
+        val highestRarityChance = 0.6 + softPityIncrement
+        val secondHighestRarityChance = 5.1
+        val lowestRarityChance = 100.0 - highestRarityChance - secondHighestRarityChance
 
         val item: BannerItemModel
         val rarity: Int
-        var newFirstRarity5Acquired = firstRarity5Acquired
+        var newFirstRarityAcquired = firstRarityAcquired
 
-        if (pullsTowardsPity >= hardPityThreshold || randomValue < rarity5Chance) {
-            rarity = 5
-            item = if (!firstRarity5Acquired || Random.nextBoolean()) {
-                rarity5Items.first()
+        if (pullsTowardsPity >= hardPityThreshold || randomValue < highestRarityChance) {
+            rarity = highestRarity
+            item = if (!firstRarityAcquired || Random.nextBoolean()) {
+                rarityItems[highestRarity]!!.first()
             } else {
-                rarity5Items.random()
+                rarityItems[highestRarity]!!.random()
             }
-            newFirstRarity5Acquired = true
-        } else if (randomValue < rarity5Chance + rarity4Chance) {
-            rarity = 4
-            item = rarity4Items.random()
+            newFirstRarityAcquired = true
+        } else if (randomValue < highestRarityChance + secondHighestRarityChance) {
+            rarity = highestRarity - 1
+            item = rarityItems[rarity]!!.random()
         } else {
-            rarity = 3
-            item = rarity3Items.random()
+            rarity = highestRarity - 2
+            item = rarityItems[rarity]!!.random()
         }
 
-        return PullResult(item, rarity) to newFirstRarity5Acquired
+        return PullResult(item, rarity) to newFirstRarityAcquired
     }
 }

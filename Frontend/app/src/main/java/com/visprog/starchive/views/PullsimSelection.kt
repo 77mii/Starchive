@@ -98,7 +98,7 @@ fun PullSimSelection(navController: NavController) {
 
                 Button(
                     onClick = {
-                        // TODO: Implement navigation to PULL SIM
+                        // THIS view is Pullsim
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                     shape = RoundedCornerShape(8.dp)

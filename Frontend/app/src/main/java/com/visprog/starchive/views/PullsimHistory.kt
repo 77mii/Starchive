@@ -30,6 +30,8 @@ import androidx.compose.ui.graphics.Color
 fun PullsimHistory(navController: NavController, viewModel: PullsimHistoryViewModel) {
     val pullLogs by viewModel.pullLogs.collectAsState()
 
+    val highestRarity = pullLogs.maxOfOrNull { it.rarity } ?: 0
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -49,9 +51,9 @@ fun PullsimHistory(navController: NavController, viewModel: PullsimHistoryViewMo
         ) {
             itemsIndexed(pullLogs) { index, pullResult ->
                 val textColor = when (pullResult.rarity) {
-                    5 -> Color(0xFFFFD700) // Gold for highest rarity
-                    4 -> Color(0xFF800080) // Purple for second highest rarity
-                    else -> Color.Black
+                    highestRarity -> Color(0xFFFFD700) // Gold for highest rarity
+                    highestRarity - 1 -> Color(0xFF800080) // Purple for second highest rarity
+                    else -> Color.Black // Default color for other rarities
                 }
                 Text(
                     text = "${index + 1}. Pulled ${pullResult.item.itemName} (Rarity ${pullResult.rarity})",
