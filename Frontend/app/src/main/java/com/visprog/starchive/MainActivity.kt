@@ -1,4 +1,4 @@
-package com.example.signuplogin
+package com.visprog.starchive
 
 import android.annotation.SuppressLint
 import android.os.Build
