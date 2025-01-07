@@ -5,5 +5,6 @@ data class HardPityModel(
     val userId: Int,
     val gameId: Int?,
     val bannerId: Int?,
+    val pityThreshold: Int?,
     val pullsTowardsPity: Int
 )

@@ -33,6 +33,7 @@ import com.visprog.starchive.models.BannerModel
 import com.visprog.starchive.models.BannerItemModel
 import com.visprog.starchive.models.UserModel
 import com.visprog.starchive.ui.theme.StarchiveTheme
+import com.visprog.starchive.viewmodels.MainViewModel
 import com.visprog.starchive.viewmodels.PullsimHistoryViewModel
 import com.visprog.starchive.viewmodels.PullsimViewModel
 import com.visprog.starchive.viewmodels.PullsimViewModelFactory
@@ -40,9 +41,11 @@ import java.time.LocalDate
 
 data class PullResult(val item: BannerItemModel, val rarity: Int)
 
+
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHistoryViewModel: PullsimHistoryViewModel) {
+fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHistoryViewModel: PullsimHistoryViewModel, mainViewModel: MainViewModel) {
     val context = LocalContext.current
     val activity = context as? Activity
 
@@ -65,11 +68,12 @@ fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHisto
         token = "token"
     )
 
-    val viewModel: PullsimViewModel = viewModel(factory = PullsimViewModelFactory(pullsimHistoryViewModel))
+    val initialHardPityModel = mainViewModel.hardPityModels.first()
+    val viewModel: PullsimViewModel = viewModel(factory = PullsimViewModelFactory(pullsimHistoryViewModel, initialHardPityModel))
 
     val hardPityModel by viewModel.hardPityModel.collectAsState()
     val pullsTowardsPity = hardPityModel.pullsTowardsPity
-    val hardPityThreshold = 90
+    val hardPityThreshold = hardPityModel.pityThreshold ?: 0
     val remainingPullsToHardPity = hardPityThreshold - pullsTowardsPity
 
     val highestRarityChance by remember { derivedStateOf { viewModel.getHighestRarityChance(bannerModel) } }
@@ -236,23 +240,8 @@ fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHisto
             }
         }
     }
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        val results by viewModel.results.collectAsState()
-        results.forEach { result ->
-            Text(
-                text = "Pulled ${result.item.itemName} (Rarity ${result.rarity})",
-                color = Color.White,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-    }
 }
+/*
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview(showBackground = true, showSystemUi = true, device = "spec:width=411dp,height=731dp,dpi=420,isRound=false,chinSize=0dp,orientation=landscape")
@@ -275,4 +264,4 @@ fun PullsimPreview() {
     StarchiveTheme(dynamicColor = false) {
         Pullsim(bannerModel, NavController(LocalContext.current), pullsimHistoryViewModel)
     }
-}
+}*/
