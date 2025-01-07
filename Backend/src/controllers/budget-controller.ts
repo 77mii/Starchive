@@ -29,6 +29,19 @@ export class BudgetController {
         }
     }
 
+    static async getByUserIdAndGameId(req: UserRequest, res: Response, next: NextFunction) {
+        try {
+            const gameId = parseInt(req.params.gameId)
+            const response = await BudgetService.getByUserIdAndGameId(req.user!, gameId)
+
+            res.status(200).json({
+                data: response
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
     static async update(req: UserRequest, res: Response, next: NextFunction) {
         try {
             const budgetId = parseInt(req.params.budgetId)

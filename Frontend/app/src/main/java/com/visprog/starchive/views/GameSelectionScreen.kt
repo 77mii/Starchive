@@ -23,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.visprog.starchive.R
+import com.visprog.starchive.R
+import kotlin.collections.listOf as listOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

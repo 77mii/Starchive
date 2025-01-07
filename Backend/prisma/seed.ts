@@ -18,12 +18,12 @@ async function main() {
   // Create a game
   const game = await prisma.games.create({
     data: {
-      game_name: "Genshin Impact",
-      income: 1000,
-      description: "Open world anime game",
-      currency_name: "Primogems",
-      tickets_name: "Intertwined Fate",
-      image_url: "https://example.com/genshin-impact.jpg",
+      game_name: "Honkai: Star Rail",
+      income: 1680,
+      description: "A Space Fantasy Turn Based RPG by Hoyoverse",
+      currency_name: "Stellar Jades",
+      tickets_name: "Star Rail Passes",
+      image_url: "R.drawable.honkai_star_rail",
     },
   });
 
@@ -31,15 +31,29 @@ async function main() {
   const banner = await prisma.banners.create({
     data: {
       game_id: game.game_id,
-      banner_name: "New Year Banner",
-      type: "Event",
+      banner_name: "A Long Voyage Home",
+      type: "Limited Character",
       start_date: new Date("2025-01-01T00:00:00.000Z"),
       end_date: new Date("2025-01-15T23:59:59.999Z"),
       hard_pity: 90,
-      soft_pity: 75,
-      image_url: "https://example.com/new-year-banner.jpg",
+      soft_pity: 76,
+      image_url: "R.drawable.fugue_banner",
     },
   });
+
+  const banner2 = await prisma.banners.create({
+    data: {
+      game_id: game.game_id,
+      banner_name: "Firefull Flyshine",
+      type: "Limited Character Rerun",
+      start_date: new Date("2025-01-01T00:00:00.000Z"),
+      end_date: new Date("2025-01-15T23:59:59.999Z"),
+      hard_pity: 90,
+      soft_pity: 76,
+      image_url: "R.drawable.firefly_banner",
+    },
+  });
+
 
   // Create a user-game relation
   await prisma.userGames.create({
@@ -54,12 +68,12 @@ async function main() {
     data: {
       user_id: user.user_id,
       game_id: game.game_id,
-      allocated_budget: 1000,
+      allocated_budget: 100000,
       allocated_currency: 5000,
       allocated_tickets: 50,
-      remaining_budget: 800,
-      remaining_currency: 4000,
-      remaining_tickets: 40,
+      remaining_budget: 20000,
+      remaining_currency: 3400,
+      remaining_tickets: 0,
     },
   });
 
@@ -75,11 +89,33 @@ async function main() {
   // Create an article
   await prisma.articles.create({
     data: {
-      title: "Genshin Impact Tips",
-      text: "Here are some tips for playing Genshin Impact...",
-      image_url: "https://example.com/genshin-impact-tips.jpg",
+      title: "HSR Patch 3.0",
+      text: "Amphoreus is coming. Lorem ipsum dolor sit amet.",
+      image_url: "R.drawable.article1",
+      game_id: game.game_id,
+      createdDate: new Date(),
     },
-  });
+  }),
+
+  await prisma.articles.create({
+    data: {
+      title: "HSR Patch 3.1",
+      text: "Amphoreus continues. Lorem ipsum dolor sit amet.",
+      image_url: "R.drawable.article2",
+      game_id: game.game_id,
+      createdDate: new Date(),
+    },
+  }),
+
+  await prisma.articles.create({
+    data: {
+      title: "HSR Patch 3.2",
+      text: "New character preview. Lorem ipsum dolor sit amet.",
+      image_url: "R.drawable.article3",
+      game_id: game.game_id,
+      createdDate: new Date(),
+    },
+  }),
 
   console.log("Seed data created successfully");
 }

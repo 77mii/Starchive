@@ -10,6 +10,7 @@ function toBannerResponse(banner) {
         start_date: banner.start_date,
         end_date: banner.end_date,
         hard_pity: banner.hard_pity,
-        soft_pity: banner.soft_pity
+        soft_pity: banner.soft_pity,
+        image_url: banner.image_url
     };
 }

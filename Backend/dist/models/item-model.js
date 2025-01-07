@@ -6,7 +6,8 @@ function toItemResponse(item) {
     return {
         item_id: item.item_id,
         rarity: item.rarity,
-        item_name: item.item_name
+        item_name: item.item_name,
+        image_url: item.image_url
     };
 }
 function toBannerItemResponse(bannerItem) {
