@@ -21,7 +21,7 @@ import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.visprog.starchive.ui.theme.StarchiveTheme
-import com.visprog.starchive.uistates.HomepageDataStatusUIState
+import com.visprog.starchive.uiStates.HomepageDataStatusUIState
 import com.visprog.starchive.viewmodels.HomepageViewModel
 import com.visprog.starchive.views.templates.CommonTemplate
 

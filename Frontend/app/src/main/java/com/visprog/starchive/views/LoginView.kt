@@ -80,7 +80,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.visprog.starchive.viewmodels.LoginViewModel
 import com.visprog.starchive.viewmodels.MainViewModel
-import com.visprog.starchive.uistates.AuthenticationStatusUIState
+import com.visprog.starchive.uiStates.AuthenticationStatusUIState
 import com.visprog.starchive.viewmodels.LoginViewModelFactory
 
 @RequiresApi(Build.VERSION_CODES.O)

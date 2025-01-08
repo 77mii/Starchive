@@ -15,9 +15,9 @@ import com.visprog.starchive.enums.PrioritiesEnum
 import com.visprog.starchive.repositories.ArticleRepository
 import com.visprog.starchive.repositories.BudgetRepository
 import com.visprog.starchive.repositories.UserRepository
-import com.visprog.starchive.uistates.HomepageDataStatusUIState
-import com.visprog.starchive.uistates.HomepageUIState
-import com.visprog.starchive.uistates.StringDataStatusUIState
+import com.visprog.starchive.uiStates.HomepageDataStatusUIState
+import com.visprog.starchive.uiStates.HomepageUIState
+import com.visprog.starchive.uiStates.StringDataStatusUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

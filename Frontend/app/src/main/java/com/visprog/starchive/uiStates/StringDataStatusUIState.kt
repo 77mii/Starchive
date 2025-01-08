@@ -1,4 +1,4 @@
-package com.visprog.starchive.uistates
+package com.visprog.starchive.uiStates
 
 interface StringDataStatusUIState {
     data class Success(val data: String): StringDataStatusUIState
