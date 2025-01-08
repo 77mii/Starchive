@@ -1,7 +1,5 @@
-package com.visprog.starchive.viewModels
+package com.visprog.starchive.viewmodels
 
-import android.text.Editable.Factory
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,9 +15,9 @@ import com.visprog.starchive.enums.PrioritiesEnum
 import com.visprog.starchive.repositories.ArticleRepository
 import com.visprog.starchive.repositories.BudgetRepository
 import com.visprog.starchive.repositories.UserRepository
-import com.visprog.starchive.uiStates.HomepageDataStatusUIState
-import com.visprog.starchive.uiStates.HomepageUIState
-import com.visprog.starchive.uiStates.StringDataStatusUIState
+import com.visprog.starchive.uistates.HomepageDataStatusUIState
+import com.visprog.starchive.uistates.HomepageUIState
+import com.visprog.starchive.uistates.StringDataStatusUIState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

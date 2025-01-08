@@ -8,7 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.core.view.WindowCompat
-import com.visprog.starchive.routes.SetupNavGraph
+import com.visprog.starchive.views.SetupNavGraph
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

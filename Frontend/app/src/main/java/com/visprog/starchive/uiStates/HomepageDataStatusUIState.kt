@@ -1,4 +1,4 @@
-package com.visprog.starchive.uiStates
+package com.visprog.starchive.uistates
 
 import com.visprog.starchive.models.BudgetModel
 
