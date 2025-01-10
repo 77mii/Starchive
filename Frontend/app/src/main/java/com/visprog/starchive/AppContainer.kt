@@ -6,15 +6,21 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.visprog.starchive.repositories.ArticleRepository
 import com.visprog.starchive.repositories.AuthRepository
+import com.visprog.starchive.repositories.BannerRepository
 import com.visprog.starchive.repositories.BudgetRepository
 import com.visprog.starchive.repositories.NetworkArticleRepository
 import com.visprog.starchive.repositories.NetworkAuthRepository
+import com.visprog.starchive.repositories.NetworkBannerRepository
 import com.visprog.starchive.repositories.NetworkBudgetRepository
+import com.visprog.starchive.repositories.NetworkUserGamesRepository
 import com.visprog.starchive.repositories.NetworkUserRepository
+import com.visprog.starchive.repositories.UserGamesRepository
 import com.visprog.starchive.repositories.UserRepository
 import com.visprog.starchive.services.ArticleService
 import com.visprog.starchive.services.AuthAPIService
+import com.visprog.starchive.services.BannerService
 import com.visprog.starchive.services.BudgetService
+import com.visprog.starchive.services.UserGameService
 import com.visprog.starchive.services.UserService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,6 +32,8 @@ interface AppContainer {
     val budgetRepository: BudgetRepository
     val articleRepository: ArticleRepository
     val authRepository: AuthRepository
+    val bannerRepository: BannerRepository
+    val userGamesRepository: UserGamesRepository
 }
 
 class DefaultAppContainer(private val userDataStore: DataStore<Preferences>): AppContainer {
@@ -56,9 +64,29 @@ class DefaultAppContainer(private val userDataStore: DataStore<Preferences>): Ap
         retrofit.create(ArticleService::class.java)
     }
 
+    private val bannerRetrofitService: BannerService by lazy {
+        val retrofit = initRetrofit()
+
+        retrofit.create(BannerService::class.java)
+    }
+
+    private val userGameRetrofitService: UserGameService by lazy {
+        val retrofit = initRetrofit()
+
+        retrofit.create(UserGameService::class.java)
+    }
+
     // REPOSITORY INITIALIZATION
     override val userRepository: UserRepository by lazy {
         NetworkUserRepository(userDataStore, userRetrofitService)
+    }
+
+    override val bannerRepository: BannerRepository by lazy {
+        NetworkBannerRepository(bannerRetrofitService)
+    }
+
+    override val userGamesRepository: UserGamesRepository by lazy {
+        NetworkUserGamesRepository(userGameRetrofitService)
     }
 
     override val budgetRepository: BudgetRepository by lazy {

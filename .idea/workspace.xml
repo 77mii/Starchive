@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="596bd128-1a91-40c6-acd2-01c54620174f" name="Changes" comment="" />
+    <list default="true" id="596bd128-1a91-40c6-acd2-01c54620174f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Frontend/app/src/main/java/com/visprog/starchive/repositories/UserGamesRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Frontend/app/src/main/java/com/visprog/starchive/services/UserGameService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Frontend/app/src/main/java/com/visprog/starchive/viewmodels/PullsimViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Frontend/app/src/main/java/com/visprog/starchive/views/PullSimView.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/app/src/main/java/com/visprog/starchive/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/app/src/main/java/com/visprog/starchive/MainActivity.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,21 +22,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "77mii"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;77mii&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/77mii/Starchive.git",
-    "accountId": "64bfeb9b-06a4-4615-b69f-d6196c9c3bb4"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/77mii/Starchive.git&quot;,
+    &quot;accountId&quot;: &quot;64bfeb9b-06a4-4615-b69f-d6196c9c3bb4&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2rNgTJIxWDp8qB90MUITncyr4m2" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -45,8 +51,9 @@
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Jo/Ngoding_CUY/VPROG/gitgit/VPALP/Starchive/Frontend",
+    "last_opened_file_path": "C:/Users/Jo/Ngoding_CUY/VPROG/gitgit/VPALP/Starchive",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>

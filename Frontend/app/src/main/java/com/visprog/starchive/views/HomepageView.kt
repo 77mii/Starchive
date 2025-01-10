@@ -1,5 +1,6 @@
 package com.visprog.starchive.views
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -13,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,6 +22,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.visprog.starchive.enums.PagesEnum
 import com.visprog.starchive.ui.theme.StarchiveTheme
 import com.visprog.starchive.uiStates.HomepageDataStatusUIState
 import com.visprog.starchive.viewmodels.HomepageViewModel
@@ -29,7 +34,10 @@ import com.visprog.starchive.views.templates.CommonTemplate
 fun HomepageView(
     homepageViewModel: HomepageViewModel = viewModel(factory = HomepageViewModel.Factory),
     token: String,
-    gameId: Int
+    gameId: Int,
+    navController: NavHostController,
+    context: Context
+
 ) {
     val dataStatus by homepageViewModel.dataStatus.collectAsStateWithLifecycle()
 
@@ -37,7 +45,13 @@ fun HomepageView(
         homepageViewModel.getBudgets(token, gameId)
     }
 
-    CommonTemplate(currentScreen = "HOMEPAGE", onNavigate = {}) {
+    CommonTemplate(currentScreen="Home", onNavigate = { screen ->
+        when (screen) {
+            "Home" -> navController.navigate(PagesEnum.Home.name)
+            "Budgeting" -> navController.navigate(PagesEnum.Budgeting.name)
+            "Pullsim" -> navController.navigate(PagesEnum.Pullsim.name)
+        }
+    }){
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -173,6 +187,6 @@ fun HomepageView(
 @Composable
 private fun HomepagePreview() {
     StarchiveTheme(dynamicColor = false) {
-        HomepageView(token = "sample_token", gameId = 1)
+        HomepageView(token = "sample_token", gameId = 1,  navController = rememberNavController(), context = LocalContext.current)
     }
 }

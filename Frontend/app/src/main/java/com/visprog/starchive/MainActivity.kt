@@ -25,7 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.visprog.starchive.StarchiveApplication
 
-import com.visprog.starchive.routes.StarchiveApp
+import com.visprog.starchive.views.StarchiveApp
 import com.visprog.starchive.ui.theme.StarchiveTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,8 +34,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
+            StarchiveTheme(dynamicColor = false) {
             /*StarchiveApplication()*/
             StarchiveApp()
+                }
         }
     }
 }

@@ -43,6 +43,7 @@ fun CommonTemplate(
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.secondary)
     ) {
+        // Header content
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -51,6 +52,7 @@ fun CommonTemplate(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Profile image
             Box(
                 modifier = Modifier
                     .requiredSize(60.dp)
@@ -66,6 +68,7 @@ fun CommonTemplate(
                 )
             }
 
+            // Logo
             Image(
                 painter = painterResource(id = R.drawable.logo_textlessdarkblue),
                 contentDescription = "Logo",
@@ -74,13 +77,14 @@ fun CommonTemplate(
             )
         }
 
+        // Main content
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
                 .background(color = MaterialTheme.colorScheme.primary)
         ) {
-            Column (
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
@@ -90,7 +94,6 @@ fun CommonTemplate(
 
                 content()
             }
-
         }
     }
 }
