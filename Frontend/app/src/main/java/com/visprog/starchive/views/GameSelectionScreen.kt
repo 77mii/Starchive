@@ -128,7 +128,8 @@ fun GameCard(title: String, imageRes: Int, navController: NavController) {
             color = Color.Gray
         )
     }
-}*/
+}*//*
+
 
 package com.visprog.starchive.views
 
@@ -153,12 +154,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.visprog.starchive.R
-import com.visprog.starchive.viewmodels.MainViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameSelectionScreen(navController: NavController, mainViewModel: MainViewModel) {
+fun GameSelectionScreen(navController: NavController) {
     var searchText by remember { mutableStateOf("") }
 
     Column(
@@ -254,4 +254,4 @@ fun GameCard(title: String, imageRes: Int, navController: NavController, gameId:
             color = Color.Gray
         )
     }
-}
+}*/

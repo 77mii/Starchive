@@ -5,12 +5,15 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.visprog.starchive.repositories.ArticleRepository
+import com.visprog.starchive.repositories.AuthRepository
 import com.visprog.starchive.repositories.BudgetRepository
 import com.visprog.starchive.repositories.NetworkArticleRepository
+import com.visprog.starchive.repositories.NetworkAuthRepository
 import com.visprog.starchive.repositories.NetworkBudgetRepository
 import com.visprog.starchive.repositories.NetworkUserRepository
 import com.visprog.starchive.repositories.UserRepository
 import com.visprog.starchive.services.ArticleService
+import com.visprog.starchive.services.AuthAPIService
 import com.visprog.starchive.services.BudgetService
 import com.visprog.starchive.services.UserService
 import okhttp3.OkHttpClient
@@ -22,17 +25,23 @@ interface AppContainer {
     val userRepository: UserRepository
     val budgetRepository: BudgetRepository
     val articleRepository: ArticleRepository
+    val authRepository: AuthRepository
 }
 
 class DefaultAppContainer(private val userDataStore: DataStore<Preferences>): AppContainer {
     // ip address
-    private val baseUrl = "https://192.168.1.36/"
+    private val baseUrl = "http://192.168.1.11:3000/"
 
     // RETROFIT SERVICE
     private val userRetrofitService: UserService by lazy {
         val retrofit = initRetrofit()
 
         retrofit.create(UserService::class.java)
+    }
+    private val authenticationRetrofitService: AuthAPIService by lazy {
+        val retrofit = initRetrofit()
+
+        retrofit.create(AuthAPIService::class.java)
     }
 
     private val budgetRetrofitService: BudgetService by lazy {
@@ -59,7 +68,9 @@ class DefaultAppContainer(private val userDataStore: DataStore<Preferences>): Ap
     override val articleRepository: ArticleRepository by lazy {
         NetworkArticleRepository(articleRetrofitService)
     }
-
+    override val authRepository: AuthRepository by lazy {
+        NetworkAuthRepository(authenticationRetrofitService)
+    }
     private fun initRetrofit(): Retrofit {
         val logging = HttpLoggingInterceptor()
         logging.level = (HttpLoggingInterceptor.Level.BODY)

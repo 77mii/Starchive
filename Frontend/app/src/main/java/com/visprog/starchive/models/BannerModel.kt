@@ -1,3 +1,4 @@
+/*
 package com.visprog.starchive.models
 
 import java.time.LocalDate
@@ -17,18 +18,22 @@ data class BannerModel(
 
 
 
-/*
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+*/
 
-@Parcelize
-data class Banner(
-    val id: Int,
+package com.visprog.starchive.models
+
+import java.time.LocalDateTime
+
+data class BannerModel(
+    val bannerId: Int,
     val gameId: Int,
-    val name: String,
+    val bannerName: String,
     val type: String,
-    val startDate: LocalDate,
-    val endDate: LocalDate,
+    val startDate: LocalDateTime,
+    val endDate: LocalDateTime,
+    val hardPity: Int?,
     val softPity: Int?,
-    val items: List<BannerItem>
-) : Parcelable*/
+    val imageUrl: String?,
+    val items: List<BannerItemModel>,
+    val hardPities: List<HardPityModel>
+)

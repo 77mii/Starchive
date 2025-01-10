@@ -12,7 +12,7 @@ data class ArticleModel(
     val articleId: Int,
     val title: String,
     val text: String,
-    val image_url: String?,
+    val imageUrl: String?,
     val gameId: Int,
     val createdDate: String
 )
@@ -20,7 +20,7 @@ data class ArticleModel(
 data class ArticleRequest(
     val title: String,
     val text: String,
-    val image_url: String?,
+    val imageUrl: String?,
     val gameId: Int,
     val createdDate: String
 )

@@ -1,14 +1,14 @@
 import { Items, BannerItems } from "@prisma/client"
 
 export interface CreateItemRequest {
-    rarity: string
+    rarity: number
     item_name: string
     image_url?: string
 }
 
 export interface ItemResponse {
     item_id: number
-    rarity: string
+    rarity: number
     item_name: string
     image_url: string | null
 }

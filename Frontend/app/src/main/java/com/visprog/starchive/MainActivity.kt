@@ -24,7 +24,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.visprog.starchive.StarchiveApplication
-import com.visprog.starchive.routes.SetupNavGraph
+
+import com.visprog.starchive.routes.StarchiveApp
 import com.visprog.starchive.ui.theme.StarchiveTheme
 
 class MainActivity : ComponentActivity() {
@@ -40,9 +41,3 @@ class MainActivity : ComponentActivity() {
 }
 
 
-@Composable
-fun StarchiveApp() {
-    StarchiveTheme(dynamicColor = false) {
-        SetupNavGraph()
-    }
-}

@@ -101,7 +101,7 @@ model Expenses {
 
 model Items {
   item_id     Int           @id @default(autoincrement())
-  rarity      String
+  rarity      Int
   item_name   String
   image_url   String?
   BannerItems BannerItems[]

@@ -80,7 +80,7 @@ async function main() {
   // Create an item
   const item = await prisma.items.create({
     data: {
-      rarity: "Rare",
+      rarity: 5,
       item_name: "Sword of Destiny",
       image_url: "https://example.com/sword-of-destiny.jpg",
     },
