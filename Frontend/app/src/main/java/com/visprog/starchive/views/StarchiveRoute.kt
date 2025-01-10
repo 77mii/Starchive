@@ -146,6 +146,7 @@ package com.visprog.starchive.routes
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -158,6 +159,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -170,6 +172,7 @@ import androidx.navigation.navArgument
 import com.visprog.starchive.enums.PagesEnum
 import com.visprog.starchive.viewmodels.AuthViewModel
 import com.visprog.starchive.viewmodels.HomepageViewModel
+import com.visprog.starchive.views.HomepageView
 /*import com.visprog.starchive.views.GameSelectionScreen*/
 import com.visprog.starchive.views.LoginView
 import com.visprog.starchive.views.RegisterView
@@ -203,6 +206,15 @@ LoginView(
     context = localContext
 )
 }
+
+        composable(route = PagesEnum.Home.name) {
+            HomepageView(
+                homepageViewModel = homepageViewModel,
+                token = token.value,
+                gameId = 1
+            )
+        }
+
         composable(route = PagesEnum.Signup.name) {
             RegisterView(
                 modifier = Modifier
