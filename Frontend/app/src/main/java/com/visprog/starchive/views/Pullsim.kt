@@ -43,7 +43,7 @@ data class PullResult(val item: BannerItemModel, val rarity: Int)
 
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun Pullsim(bannerModel: BannerModel, navController: NavController, pullsimHistoryViewModel: PullsimHistoryViewModel, mainViewModel: MainViewModel) {
     val context = LocalContext.current

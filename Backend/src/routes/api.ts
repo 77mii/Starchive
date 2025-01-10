@@ -11,7 +11,7 @@ import { UserGameController } from "../controllers/user-game-controller"
 import { ItemController } from "../controllers/item-controller"
 import { AnalyticsController } from "../controllers/analytics-controller"
 import { ArticleController } from "../controllers/article-controller"
-
+import { BannerItemController } from "../controllers/banner-item-controller";
 export const apiRouter = express.Router()
 apiRouter.use(authMiddleware)
 // user
@@ -39,6 +39,12 @@ apiRouter.post("/api/banners", BannerController.create)
 apiRouter.get("/api/banners/:gameId(\\d+)", BannerController.getByGameId)
 apiRouter.put("/api/banners/:bannerId(\\d+)", BannerController.update)
 apiRouter.get("/api/banners/active", BannerController.getActive)
+//banner-item
+apiRouter.post("/api/banner-items", BannerItemController.create);
+apiRouter.get("/api/banner-items/:bannerId(\\d+)", BannerItemController.getByBannerId);
+apiRouter.get("/api/banner-items/:bannerId(\\d+)/:itemId(\\d+)", BannerItemController.get);
+apiRouter.put("/api/banner-items/:bannerId(\\d+)/:itemId(\\d+)", BannerItemController.update);
+apiRouter.delete("/api/banner-items/:bannerId(\\d+)/:itemId(\\d+)", BannerItemController.delete);
 // pity
 apiRouter.post("/api/pity", PityController.create)
 apiRouter.get("/api/pity/:bannerId(\\d+)", PityController.getByBannerId)

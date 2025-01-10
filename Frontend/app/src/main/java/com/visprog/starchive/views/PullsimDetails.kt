@@ -169,7 +169,7 @@ fun PullsimDetails(bannerModel: BannerModel, navController: NavController) {
         }
     }
 }*/
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun PullsimDetails(bannerModel: BannerModel, navController: NavController) {
     val context = LocalContext.current

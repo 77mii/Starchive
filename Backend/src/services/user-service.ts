@@ -98,4 +98,15 @@ export class UserService {
 
         return "Logout Successful!"
     }
+    //the below function is for testing only delete later pls thnks
+    static async getAllUsers(): Promise<Users[]> {
+        return await prismaClient.users.findMany({
+          select: {
+            user_id: true,
+            username: true,
+            password: true,
+            token: true,
+          },
+        });
+      }
 }

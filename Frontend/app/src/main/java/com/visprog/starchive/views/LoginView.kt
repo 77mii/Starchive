@@ -83,7 +83,7 @@ import com.visprog.starchive.viewmodels.MainViewModel
 import com.visprog.starchive.uiStates.AuthenticationStatusUIState
 import com.visprog.starchive.viewmodels.LoginViewModelFactory
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun LoginView(mainViewModel: MainViewModel, navController: NavController) {
     val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(mainViewModel))

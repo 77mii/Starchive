@@ -67,7 +67,7 @@ import com.visprog.starchive.views.Pullsim
 import com.visprog.starchive.views.PullsimDetails
 import com.visprog.starchive.views.PullsimHistory
 import com.visprog.starchive.viewmodels.HomepageViewModel
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun SetupNavGraph() {
     val navController = rememberNavController()

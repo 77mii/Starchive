@@ -26,7 +26,7 @@ interface AppContainer {
 
 class DefaultAppContainer(private val userDataStore: DataStore<Preferences>): AppContainer {
     // ip address
-    private val baseUrl = "https://182.253.122.0/"
+    private val baseUrl = "https://192.168.1.36/"
 
     // RETROFIT SERVICE
     private val userRetrofitService: UserService by lazy {

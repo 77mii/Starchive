@@ -46,4 +46,15 @@ export class UserController {
             next(error)
         }
     }
+    static async getAllUsers(req: Request, res: Response, next: NextFunction) {
+        try {
+          const users = await UserService.getAllUsers();
+    
+          res.status(200).json({
+            data: users,
+          });
+        } catch (error) {
+          next(error);
+        }
+      }
 }
