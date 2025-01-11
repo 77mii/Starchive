@@ -54,5 +54,18 @@ class UserController {
             }
         });
     }
+    static getAllUsers(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const users = yield user_service_1.UserService.getAllUsers();
+                res.status(200).json({
+                    data: users,
+                });
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+    }
 }
 exports.UserController = UserController;

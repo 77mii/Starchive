@@ -121,7 +121,7 @@ fun HomepageView(
                                     color = MaterialTheme.colorScheme.primary
                                 )
                                 Text(
-                                    text = "Rp ${budget.remainingBudget}",
+                                    text = "Rp ${budget.data.remaining_budget.toInt()}",
                                     fontSize = 32.sp,
                                     fontWeight = FontWeight.Bold,
                                     fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
@@ -144,7 +144,7 @@ fun HomepageView(
                                         color = MaterialTheme.colorScheme.primary
                                     )
                                     Text(
-                                        text = "${budget.remainingCurrency}",
+                                        text = "${budget.data.remaining_currency.toInt()}",
                                         fontSize = 32.sp,
                                         fontWeight = FontWeight.Bold,
                                         fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
@@ -161,7 +161,7 @@ fun HomepageView(
                                         color = MaterialTheme.colorScheme.primary
                                     )
                                     Text(
-                                        text = "${budget.remainingTickets}",
+                                        text = "${budget.data.remaining_tickets.toInt()}",
                                         fontSize = 32.sp,
                                         fontWeight = FontWeight.Bold,
                                         fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,

@@ -17,6 +17,7 @@ const user_game_controller_1 = require("../controllers/user-game-controller");
 const item_controller_1 = require("../controllers/item-controller");
 const analytics_controller_1 = require("../controllers/analytics-controller");
 const article_controller_1 = require("../controllers/article-controller");
+const banner_item_controller_1 = require("../controllers/banner-item-controller");
 exports.apiRouter = express_1.default.Router();
 exports.apiRouter.use(auth_middleware_1.authMiddleware);
 // user
@@ -44,6 +45,12 @@ exports.apiRouter.post("/api/banners", banner_controller_1.BannerController.crea
 exports.apiRouter.get("/api/banners/:gameId(\\d+)", banner_controller_1.BannerController.getByGameId);
 exports.apiRouter.put("/api/banners/:bannerId(\\d+)", banner_controller_1.BannerController.update);
 exports.apiRouter.get("/api/banners/active", banner_controller_1.BannerController.getActive);
+//banner-item
+exports.apiRouter.post("/api/banner-items", banner_item_controller_1.BannerItemController.create);
+exports.apiRouter.get("/api/banner-items/:bannerId(\\d+)", banner_item_controller_1.BannerItemController.getByBannerId);
+exports.apiRouter.get("/api/banner-items/:bannerId(\\d+)/:itemId(\\d+)", banner_item_controller_1.BannerItemController.get);
+exports.apiRouter.put("/api/banner-items/:bannerId(\\d+)/:itemId(\\d+)", banner_item_controller_1.BannerItemController.update);
+exports.apiRouter.delete("/api/banner-items/:bannerId(\\d+)/:itemId(\\d+)", banner_item_controller_1.BannerItemController.delete);
 // pity
 exports.apiRouter.post("/api/pity", pity_controller_1.PityController.create);
 exports.apiRouter.get("/api/pity/:bannerId(\\d+)", pity_controller_1.PityController.getByBannerId);
