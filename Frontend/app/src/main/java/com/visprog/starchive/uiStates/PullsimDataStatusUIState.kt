@@ -1,6 +1,7 @@
 package com.visprog.starchive.uiStates
 
 import com.visprog.starchive.models.BannerModel
+import kotlinx.coroutines.flow.StateFlow
 
 /*interface PullsimDataStatusUIState {
     object Start : PullsimDataStatusUIState

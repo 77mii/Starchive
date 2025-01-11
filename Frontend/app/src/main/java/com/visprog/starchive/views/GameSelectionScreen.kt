@@ -2,7 +2,7 @@
 
 
 
-package com.visprog.starchive.views
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -255,3 +255,5 @@ fun GameCard(title: String, imageRes: Int, navController: NavController, gameId:
         )
     }
 }*/
+
+package com.visprog.starchive.views

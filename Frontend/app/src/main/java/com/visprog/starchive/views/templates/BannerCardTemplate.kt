@@ -1,0 +1,95 @@
+package com.visprog.starchive.views.templates
+
+import androidx.compose.material3.Card
+import androidx.compose.runtime.Composable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
+
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
+import coil3.request.ImageRequest
+
+@Composable
+fun BannerCardTemplate(
+    firstItem: String,
+    modifier: Modifier = Modifier,
+    bannername: String,
+    bannerimage: String,
+    onCardClick: () -> Unit
+) {
+
+
+    Card(
+        onClick = onCardClick,
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(bannerimage)
+                    .build(),
+                contentDescription = "imageofbanner",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.Gray)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = bannername,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = Color.Black
+            )
+            Text(
+                text = firstItem,
+                fontSize = 16.sp,
+                color = Color.Gray
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
+@Composable
+
+fun BannerCardTemplatePreview() {
+    BannerCardTemplate(
+        firstItem = "First Item",
+        bannername = "Banner Name",
+        bannerimage = "https://cdn.oneesports.id/cdn-data/sites/2/2024/05/honkai_star_rail_firefly_drip_marketing-1024x576-1.jpg",
+        onCardClick = {},
+
+    )
+}

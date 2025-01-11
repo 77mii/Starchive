@@ -102,7 +102,8 @@ LoginView(
                         pullsimViewModel = pullsimViewModel,
                         token = token.value,
                         gameId = 1,
-                        navController = navController
+                        navController = navController,
+                        context = localContext
                     )
                 }
 

@@ -1,5 +1,8 @@
 package com.visprog.starchive.viewmodels
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -22,9 +25,11 @@ class PullsimViewModel(
     ): ViewModel() {
 
     private val _dataStatus = MutableStateFlow<PullsimDataStatusUIState>(PullsimDataStatusUIState.Start)
-    val dataStatus: StateFlow<PullsimDataStatusUIState> = _dataStatus
+   /* var dataStatus: StateFlow<PullsimDataStatusUIState> = _dataStatus*/
+ var dataStatus: PullsimDataStatusUIState by mutableStateOf(PullsimDataStatusUIState.Start)
+        private set
 
-    fun getBanners( gameId: Int) {
+    /*fun getBanners( gameId: Int) {
        viewModelScope.launch {
            _dataStatus.value = PullsimDataStatusUIState.Loading
            try {
@@ -42,7 +47,29 @@ class PullsimViewModel(
                _dataStatus.value = PullsimDataStatusUIState.Failed(e.message ?: "Unknown error")
            }
        }
+    }*/
+
+    fun getBannersbyGameId(gameId: Int) {
+        viewModelScope.launch {
+            _dataStatus.value = PullsimDataStatusUIState.Loading
+            try {
+                val response = bannerRepository.getBannersByGameId(gameId).execute()
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _dataStatus.value = PullsimDataStatusUIState.Success(it)
+                    } ?: run {
+                        _dataStatus.value = PullsimDataStatusUIState.Failed("No data available")
+                    }
+                } else {
+                    _dataStatus.value = PullsimDataStatusUIState.Failed("Failed to get data")
+                }
+            } catch (e: Exception) {
+                _dataStatus.value = PullsimDataStatusUIState.Failed(e.message ?: "Unknown error")
+            }
+        }
+
     }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -52,5 +79,8 @@ class PullsimViewModel(
                 PullsimViewModel(bannerRepository, userGamesRepository)
             }
         }
+    }
+    fun clearDataErrorMessage() {
+        dataStatus = PullsimDataStatusUIState.Start
     }
 }
