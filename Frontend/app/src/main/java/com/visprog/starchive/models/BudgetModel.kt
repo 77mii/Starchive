@@ -10,23 +10,21 @@ data class GetBudgetResponse(
 
 data class BudgetModel(
     val budgetId: Int,
-    val userId: Int,
     val gameId: Int,
-    val allocatedBudget: Float,
-    val allocatedCurrency: Float,
-    val allocatedTickets: Float,
-    val remainingBudget: Float,
-    val remainingCurrency: Float,
-    val remainingTickets: Float
+    val allocated_budget: Float,
+    val allocated_burrency: Float,
+    val allocated_tickets: Float,
+    val remaining_budget: Float,
+    val remaining_currency: Float,
+    val remaining_tickets: Float
 )
 
 data class BudgetRequest(
-    val userId: Int,
     val gameId: Int,
-    val allocatedBudget: Float,
-    val allocatedCurrency: Float,
-    val allocatedTickets: Float,
-    val remainingBudget: Float,
-    val remainingCurrency: Float,
-    val remainingTickets: Float
+    val allocated_budget: Float,
+    val allocated_burrency: Float,
+    val allocated_tickets: Float,
+    val remaining_budget: Float,
+    val remaining_currency: Float,
+    val remaining_tickets: Float
 )

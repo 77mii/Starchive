@@ -2,13 +2,14 @@ package com.visprog.starchive.repositories
 
 import com.visprog.starchive.models.BudgetModel
 import com.visprog.starchive.models.GeneralResponseModel
+import com.visprog.starchive.models.GetBudgetResponse
 import com.visprog.starchive.services.BudgetService
 import retrofit2.Call
 
 interface BudgetRepository {
     fun createBudget(budget: BudgetModel): Call<GeneralResponseModel>
     fun getBudgetsByUserId(token: String): Call<List<BudgetModel>>
-    fun getBudgetByUserIdAndGameId(token: String, gameId: Int): Call<BudgetModel>
+    fun getBudgetByUserIdAndGameId(token: String, gameId: Int): Call<GetBudgetResponse>
     fun updateBudget(budgetId: Int, budget: BudgetModel): Call<GeneralResponseModel>
 }
 
@@ -24,7 +25,7 @@ class NetworkBudgetRepository(
         return budgetService.getBudgetsByUserId(token)
     }
 
-    override fun getBudgetByUserIdAndGameId(token: String, gameId: Int): Call<BudgetModel> {
+    override fun getBudgetByUserIdAndGameId(token: String, gameId: Int): Call<GetBudgetResponse> {
         return budgetService.getBudgetByUserIdAndGameId(token, gameId)
     }
 

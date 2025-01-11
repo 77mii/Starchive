@@ -87,5 +87,18 @@ class UserService {
             return "Logout Successful!";
         });
     }
+    //the below function is for testing only delete later pls thnks
+    static getAllUsers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield database_1.prismaClient.users.findMany({
+                select: {
+                    user_id: true,
+                    username: true,
+                    password: true,
+                    token: true,
+                },
+            });
+        });
+    }
 }
 exports.UserService = UserService;

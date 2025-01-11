@@ -1,5 +1,3 @@
-
-
 package com.visprog.starchive.viewmodels
 
 import android.util.Log
@@ -26,24 +24,27 @@ import com.visprog.starchive.repositories.UserRepository
 import com.visprog.starchive.uiStates.HomepageDataStatusUIState
 import com.visprog.starchive.uiStates.HomepageUIState
 import com.visprog.starchive.uiStates.StringDataStatusUIState
+import kotlinx.coroutines.Dispatchers
+import java.io.IOException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 
-class HomepageViewModel (
-    private val budgetRepository: BudgetRepository,
-    private val articleRepository: ArticleRepository,
-    private val userRepository: UserRepository
-): ViewModel() {
+class HomepageViewModel(
+        private val budgetRepository: BudgetRepository,
+        private val articleRepository: ArticleRepository,
+        private val userRepository: UserRepository
+) : ViewModel() {
     private val _homepageUIState = MutableLiveData<HomepageUIState>()
 
-    private val _dataStatus = MutableStateFlow<HomepageDataStatusUIState>(HomepageDataStatusUIState.Start)
+    private val _dataStatus =
+            MutableStateFlow<HomepageDataStatusUIState>(HomepageDataStatusUIState.Start)
     val dataStatus: StateFlow<HomepageDataStatusUIState> = _dataStatus
 
     var logoutStatus: StringDataStatusUIState by mutableStateOf(StringDataStatusUIState.Start)
@@ -53,33 +54,37 @@ class HomepageViewModel (
         articleRepository.getArticlesByGameId(gameId)
     }
 
-    val token: StateFlow<String> = userRepository.currentUserToken.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = ""
-    )
+    val token: StateFlow<String> =
+            userRepository.currentUserToken.stateIn(
+                    scope = viewModelScope,
+                    started = SharingStarted.WhileSubscribed(5000),
+                    initialValue = ""
+            )
 
     fun getBudgets(token: String, gameId: Int) {
         viewModelScope.launch {
             _dataStatus.value = HomepageDataStatusUIState.Loading
             try {
-                val response = budgetRepository.getBudgetByUserIdAndGameId(token, gameId).execute()
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        _dataStatus.value = HomepageDataStatusUIState.Success(it)
-                    } ?: run {
-                        _dataStatus.value = HomepageDataStatusUIState.Failed("No data available")
+                withContext(Dispatchers.IO) {
+                    val response =
+                            budgetRepository.getBudgetByUserIdAndGameId(token, gameId).execute()
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            _dataStatus.value = HomepageDataStatusUIState.Success(it)
+                        }
+                                ?: run {
+                                    _dataStatus.value =
+                                            HomepageDataStatusUIState.Failed("No data available")
+                                }
+                    } else {
+                        _dataStatus.value = HomepageDataStatusUIState.Failed("Failed to fetch data")
                     }
-                } else {
-                    _dataStatus.value = HomepageDataStatusUIState.Failed("Failed to fetch data")
                 }
             } catch (e: Exception) {
                 _dataStatus.value = HomepageDataStatusUIState.Failed(e.message ?: "Unknown error")
             }
         }
     }
-
-    
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
@@ -125,34 +130,42 @@ class HomepageViewModel (
             try {
                 val call = userRepository.logout(token)
 
-                call.enqueue(object: Callback<GeneralResponseModel> {
-                    override fun onResponse(call: Call<GeneralResponseModel>, res: Response<GeneralResponseModel>) {
-                        if (res.isSuccessful) {
-                            logoutStatus = StringDataStatusUIState.Success(data = res.body()!!.data)
+                call.enqueue(
+                        object : Callback<GeneralResponseModel> {
+                            override fun onResponse(
+                                    call: Call<GeneralResponseModel>,
+                                    res: Response<GeneralResponseModel>
+                            ) {
+                                if (res.isSuccessful) {
+                                    logoutStatus =
+                                            StringDataStatusUIState.Success(
+                                                    data = res.body()!!.data
+                                            )
 
-                            saveUsernameToken("Unknown", "Unknown")
+                                    saveUsernameToken("Unknown", "Unknown")
 
-                            navController.navigate(PagesEnum.Login.name) {
-                                popUpTo(PagesEnum.Home.name) {
-                                    inclusive = true
+                                    navController.navigate(PagesEnum.Login.name) {
+                                        popUpTo(PagesEnum.Home.name) { inclusive = true }
+                                    }
+                                } else {
+                                    val errorMessage =
+                                            Gson().fromJson(
+                                                            res.errorBody()!!.charStream(),
+                                                            ErrorModel::class.java
+                                                    )
+
+                                    logoutStatus =
+                                            StringDataStatusUIState.Failed(errorMessage.errors)
+                                    // set error message toast
                                 }
                             }
-                        } else {
-                            val errorMessage = Gson().fromJson(
-                                res.errorBody()!!.charStream(),
-                                ErrorModel::class.java
-                            )
 
-                            logoutStatus = StringDataStatusUIState.Failed(errorMessage.errors)
-                            // set error message toast
+                            override fun onFailure(call: Call<GeneralResponseModel>, t: Throwable) {
+                                logoutStatus = StringDataStatusUIState.Failed(t.localizedMessage)
+                                Log.d("logout-failure", t.localizedMessage)
+                            }
                         }
-                    }
-
-                    override fun onFailure(call: Call<GeneralResponseModel>, t: Throwable) {
-                        logoutStatus = StringDataStatusUIState.Failed(t.localizedMessage)
-                        Log.d("logout-failure", t.localizedMessage)
-                    }
-                })
+                )
             } catch (error: IOException) {
                 logoutStatus = StringDataStatusUIState.Failed(error.localizedMessage)
                 Log.d("logout-error", error.localizedMessage)

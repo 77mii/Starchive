@@ -6,7 +6,7 @@ class ItemValidation {
 }
 exports.ItemValidation = ItemValidation;
 ItemValidation.CREATE = zod_1.z.object({
-    rarity: zod_1.z.string().min(1),
+    rarity: zod_1.z.number().int().min(1),
     item_name: zod_1.z.string().min(1),
     image_url: zod_1.z.string().url().optional()
 });
