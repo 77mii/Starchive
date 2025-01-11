@@ -18,40 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-/*@Composable
-fun NavigationBar(
-    currentScreen: String,
-    onNavigate: (String) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        val screens = listOf("HOMEPAGE", "BUDGETING", "PULL SIM")
-        screens.forEach { screen ->
-            val isSelected = currentScreen == screen
 
-            Button(
-                onClick = { onNavigate(screen) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Transparent
-                ),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Text(
-                    text = screen,
-                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                        fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
-                    )
-                )
-            }
-        }
-    }
-}*/
 
 @Composable
 fun NavigationBar(

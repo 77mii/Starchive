@@ -1,39 +1,19 @@
-/*
-package com.visprog.starchive.models
-
-import java.time.LocalDate
-
-data class BannerModel(
-    val id: Int,
-    val gameId: Int,
-    val name: String,
-    val type: String,
-    val startDate: LocalDate,
-    val endDate: LocalDate,
-    val softPity: Int?,
-    val items: List<BannerItemModel>
-)
-
-
-
-
-
-*/
 
 package com.visprog.starchive.models
 
+import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
 
 data class BannerModel(
-    val bannerId: Int,
-    val gameId: Int,
-    val bannerName: String,
-    val type: String,
-    val startDate: LocalDateTime,
-    val endDate: LocalDateTime,
-    val hardPity: Int?,
-    val softPity: Int?,
-    val imageUrl: String?,
-    val items: List<BannerItemModel>,
-    val hardPities: List<HardPityModel>
+    @SerializedName("banner_id") val bannerId: Int,
+    @SerializedName("game_id") val gameId: Int,
+    @SerializedName("banner_name") val bannerName: String?,
+    @SerializedName("type") val type: String,
+    @SerializedName("start_date") val startDate: LocalDateTime?,
+    @SerializedName("end_date") val endDate: LocalDateTime?,
+    @SerializedName("hard_pity") val hardPity: Int?,
+    @SerializedName("soft_pity") val softPity: Int?,
+    @SerializedName("image_url") val imageUrl: String?,
+    @SerializedName("items") val items: List<BannerItemModel>?,
+    @SerializedName("hard_pities") val hardPities: List<HardPityModel>?
 )
