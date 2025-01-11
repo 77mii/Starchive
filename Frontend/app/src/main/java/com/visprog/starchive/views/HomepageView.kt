@@ -49,6 +49,7 @@ fun HomepageView(
 
     LaunchedEffect(Unit) {
         homepageViewModel.getBudgets(token, gameId)
+        
     }
 
     CommonTemplate(currentScreen="Home", onNavigate = { screen ->

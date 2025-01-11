@@ -26,6 +26,7 @@ class NetworkUserRepository(
     private val userDataStore: DataStore<Preferences>,
     private val userService: UserService
 ): UserRepository {
+    
     private companion object {
         val USER_TOKEN = stringPreferencesKey("token")
         val USERNAME = stringPreferencesKey("username")

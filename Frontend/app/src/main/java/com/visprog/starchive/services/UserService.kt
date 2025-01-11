@@ -8,4 +8,5 @@ import retrofit2.http.POST
 interface UserService {
     @POST("api/logout")
     fun logout(@Header("X-API-TOKEN") token: String): Call<GeneralResponseModel>
+    
 }
