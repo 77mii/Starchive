@@ -12,7 +12,7 @@ data class BudgetModel(
     val budgetId: Int,
     val gameId: Int,
     val allocated_budget: Float,
-    val allocated_burrency: Float,
+    val allocated_currency: Float,
     val allocated_tickets: Float,
     val remaining_budget: Float,
     val remaining_currency: Float,
@@ -22,7 +22,7 @@ data class BudgetModel(
 data class BudgetRequest(
     val gameId: Int,
     val allocated_budget: Float,
-    val allocated_burrency: Float,
+    val allocated_currency: Float,
     val allocated_tickets: Float,
     val remaining_budget: Float,
     val remaining_currency: Float,

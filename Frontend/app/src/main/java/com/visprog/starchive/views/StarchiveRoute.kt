@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 package com.visprog.starchive.views
 
 import android.os.Build
@@ -33,6 +26,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.visprog.starchive.enums.PagesEnum
+import com.visprog.starchive.viewModels.BudgetingViewModel
 import com.visprog.starchive.viewmodels.AuthViewModel
 import com.visprog.starchive.viewmodels.GameSelectionViewModel
 import com.visprog.starchive.viewmodels.HomepageViewModel
@@ -49,40 +43,38 @@ fun StarchiveApp(
     homepageViewModel: HomepageViewModel = viewModel(factory = HomepageViewModel.Factory),
     authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory),
     pullsimViewModel: PullsimViewModel = viewModel(factory = PullsimViewModel.Factory),
-    gameSelectionViewModel: GameSelectionViewModel = viewModel(factory = GameSelectionViewModel.Factory)
-
-
-
-    ){
+    gameSelectionViewModel: GameSelectionViewModel = viewModel(factory = GameSelectionViewModel.Factory),
+    budgetingViewModel: BudgetingViewModel = viewModel(factory = BudgetingViewModel.Factory)
+) {
     val localContext = LocalContext.current
     val token = homepageViewModel.token.collectAsState()
 
-    NavHost(navController = navController, startDestination = if(token.value !="Unknown"&& token.value != ""){
-        PagesEnum.Home.name
+    NavHost(
+        navController = navController,
+        startDestination = if (token.value != "Unknown" && token.value != "") {
+            PagesEnum.Home.name
+        } else {
+            PagesEnum.Login.name
         }
-    else
+    )
     {
-        PagesEnum.Login.name
-    }
-        )
-            {
 
-composable(route = PagesEnum.Login.name){
-LoginView(
-    modifier = Modifier
-        .fillMaxSize()
-        .padding(20.dp),
-    authenticationViewModel = authViewModel,
-    navController = navController,
-    context = localContext
-)
-}
-                composable(route = PagesEnum.GameChoice.name) {
-                    GameSelectionScreen(
-                        navController = navController,
-                        gameSelectionViewModel = gameSelectionViewModel
-                    )
-                }
+        composable(route = PagesEnum.Login.name) {
+            LoginView(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp),
+                authenticationViewModel = authViewModel,
+                navController = navController,
+                context = localContext
+            )
+        }
+        composable(route = PagesEnum.GameChoice.name) {
+            GameSelectionScreen(
+                navController = navController,
+                gameSelectionViewModel = gameSelectionViewModel
+            )
+        }
 
         composable(route = PagesEnum.Home.name) {
             HomepageView(
@@ -91,6 +83,15 @@ LoginView(
                 gameId = 1,
                 navController = navController,
                 context = localContext
+            )
+        }
+
+        composable(route = PagesEnum.Budgeting.name) {
+            BudgetingView(
+                budgetingViewModel = budgetingViewModel,
+                token = token.value,
+                gameId = 1,
+                navController = navController
             )
         }
 
@@ -105,15 +106,15 @@ LoginView(
             )
         }
 
-                composable(route = PagesEnum.Pullsim.name) {
-                    PullsimView(
-                        pullsimViewModel = pullsimViewModel,
-                        token = token.value,
-                        gameId = 1,
-                        navController = navController,
+        composable(route = PagesEnum.Pullsim.name) {
+            PullsimView(
+                pullsimViewModel = pullsimViewModel,
+                token = token.value,
+                gameId = 1,
+                navController = navController,
 
-                    )
-                }
+                )
+        }
 
     }
 }
