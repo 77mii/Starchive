@@ -8,10 +8,12 @@ import com.visprog.starchive.repositories.ArticleRepository
 import com.visprog.starchive.repositories.AuthRepository
 import com.visprog.starchive.repositories.BannerRepository
 import com.visprog.starchive.repositories.BudgetRepository
+import com.visprog.starchive.repositories.GameRepository
 import com.visprog.starchive.repositories.NetworkArticleRepository
 import com.visprog.starchive.repositories.NetworkAuthRepository
 import com.visprog.starchive.repositories.NetworkBannerRepository
 import com.visprog.starchive.repositories.NetworkBudgetRepository
+import com.visprog.starchive.repositories.NetworkGameRepository
 import com.visprog.starchive.repositories.NetworkUserGamesRepository
 import com.visprog.starchive.repositories.NetworkUserRepository
 import com.visprog.starchive.repositories.UserGamesRepository
@@ -20,6 +22,7 @@ import com.visprog.starchive.services.ArticleService
 import com.visprog.starchive.services.AuthAPIService
 import com.visprog.starchive.services.BannerService
 import com.visprog.starchive.services.BudgetService
+import com.visprog.starchive.services.GameService
 import com.visprog.starchive.services.UserGameService
 import com.visprog.starchive.services.UserService
 import okhttp3.OkHttpClient
@@ -34,6 +37,8 @@ interface AppContainer {
     val authRepository: AuthRepository
     val bannerRepository: BannerRepository
     val userGamesRepository: UserGamesRepository
+    val GameRepository: GameRepository
+
 }
 
 class DefaultAppContainer(private val userDataStore: DataStore<Preferences>): AppContainer {
@@ -76,7 +81,17 @@ class DefaultAppContainer(private val userDataStore: DataStore<Preferences>): Ap
         retrofit.create(UserGameService::class.java)
     }
 
+    private val gameRetrofitService: GameService by lazy {
+        val retrofit = initRetrofit()
+
+        retrofit.create(GameService::class.java)
+    }
+
     // REPOSITORY INITIALIZATION
+
+    override val GameRepository: GameRepository by lazy {
+        NetworkGameRepository(gameRetrofitService)
+    }
     override val userRepository: UserRepository by lazy {
         NetworkUserRepository(userDataStore, userRetrofitService)
     }

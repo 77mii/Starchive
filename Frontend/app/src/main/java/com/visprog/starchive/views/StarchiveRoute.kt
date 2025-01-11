@@ -34,6 +34,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.visprog.starchive.enums.PagesEnum
 import com.visprog.starchive.viewmodels.AuthViewModel
+import com.visprog.starchive.viewmodels.GameSelectionViewModel
 import com.visprog.starchive.viewmodels.HomepageViewModel
 import com.visprog.starchive.viewmodels.PullsimViewModel
 import com.visprog.starchive.views.HomepageView
@@ -47,7 +48,8 @@ fun StarchiveApp(
     navController: NavHostController = rememberNavController(),
     homepageViewModel: HomepageViewModel = viewModel(factory = HomepageViewModel.Factory),
     authViewModel: AuthViewModel = viewModel(factory = AuthViewModel.Factory),
-    pullsimViewModel: PullsimViewModel = viewModel(factory = PullsimViewModel.Factory)
+    pullsimViewModel: PullsimViewModel = viewModel(factory = PullsimViewModel.Factory),
+    gameSelectionViewModel: GameSelectionViewModel = viewModel(factory = GameSelectionViewModel.Factory)
 
 
 
@@ -75,6 +77,12 @@ LoginView(
     context = localContext
 )
 }
+                composable(route = PagesEnum.GameChoice.name) {
+                    GameSelectionScreen(
+                        navController = navController,
+                        gameSelectionViewModel = gameSelectionViewModel
+                    )
+                }
 
         composable(route = PagesEnum.Home.name) {
             HomepageView(
@@ -103,7 +111,7 @@ LoginView(
                         token = token.value,
                         gameId = 1,
                         navController = navController,
-                        context = localContext
+
                     )
                 }
 
