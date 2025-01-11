@@ -28,7 +28,7 @@ async function main() {
   });
 
   // Create a banner
-  const banner = await prisma.banners.create({
+  const banner1 = await prisma.banners.create({
     data: {
       game_id: game.game_id,
       banner_name: "A Long Voyage Home",
@@ -37,7 +37,7 @@ async function main() {
       end_date: new Date("2025-01-15T23:59:59.999Z"),
       hard_pity: 90,
       soft_pity: 76,
-      image_url: "R.drawable.fugue_banner",
+      image_url: "https://www.lapakgaming.com/blog/id-id/wp-content/uploads/2024/12/Fugue-Honkai-Star-Rail.jpg",
     },
   });
 
@@ -50,10 +50,9 @@ async function main() {
       end_date: new Date("2025-01-15T23:59:59.999Z"),
       hard_pity: 90,
       soft_pity: 76,
-      image_url: "R.drawable.firefly_banner",
+      image_url: "https://cdn.oneesports.id/cdn-data/sites/2/2024/05/honkai_star_rail_firefly_drip_marketing-1024x576-1-450x253.jpg",
     },
   });
-
 
   // Create a user-game relation
   await prisma.userGames.create({
@@ -86,7 +85,24 @@ async function main() {
     },
   });
 
-  // Create an article
+  // Add the item to both banners
+  await prisma.bannerItems.create({
+    data: {
+      banner_id: banner1.banner_id,
+      item_id: item.item_id,
+      acquire_rate: 0.5, // Example acquire rate
+    },
+  });
+
+  await prisma.bannerItems.create({
+    data: {
+      banner_id: banner2.banner_id,
+      item_id: item.item_id,
+      acquire_rate: 0.5, // Example acquire rate
+    },
+  });
+
+  // Create articles
   await prisma.articles.create({
     data: {
       title: "HSR Patch 3.0",
@@ -95,7 +111,7 @@ async function main() {
       game_id: game.game_id,
       createdDate: new Date(),
     },
-  }),
+  });
 
   await prisma.articles.create({
     data: {
@@ -105,7 +121,7 @@ async function main() {
       game_id: game.game_id,
       createdDate: new Date(),
     },
-  }),
+  });
 
   await prisma.articles.create({
     data: {
@@ -115,7 +131,7 @@ async function main() {
       game_id: game.game_id,
       createdDate: new Date(),
     },
-  }),
+  });
 
   console.log("Seed data created successfully");
 }

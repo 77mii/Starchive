@@ -1,10 +1,13 @@
 package com.visprog.starchive.views
 
 import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -14,7 +17,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,6 +34,7 @@ import com.visprog.starchive.ui.theme.StarchiveTheme
 import com.visprog.starchive.uiStates.HomepageDataStatusUIState
 import com.visprog.starchive.viewmodels.HomepageViewModel
 import com.visprog.starchive.views.templates.CommonTemplate
+import com.visprog.starchive.R
 
 @Composable
 fun HomepageView(
@@ -57,6 +63,25 @@ fun HomepageView(
                 .fillMaxSize()
                 .padding(top = 32.dp)
         ) {
+            Button(
+                onClick = {
+                    homepageViewModel.logoutUser(token, navController)
+                },
+                modifier = Modifier
+                    .align(alignment = Alignment.End)
+                    .padding(end = 10.dp, top = 20.dp)
+                    .size(45.dp),
+                colors = ButtonDefaults.buttonColors(Color.Red),
+                contentPadding = PaddingValues(0.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_logout),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(Color.White),
+                    modifier = Modifier
+                        .size(20.dp)
+                )
+            }
             when (dataStatus) {
                 is HomepageDataStatusUIState.Success -> {
                     val budget = (dataStatus as HomepageDataStatusUIState.Success).data
