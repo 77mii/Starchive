@@ -112,5 +112,13 @@ fun StarchiveApp(
                 articleId = articleId
             )
         }
+        composable(route = "${PagesEnum.Plans.name}/{planId}", arguments = listOf(navArgument("planId") { type = NavType.IntType })) { backStackEntry ->
+            val gameId = backStackEntry.arguments?.getInt("planId") ?: 0
+            PlansView(
+                token = token.value,
+                gameId = gameId,
+                navController = navController
+            )
+        }
     }
 }

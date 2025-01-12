@@ -41,4 +41,17 @@ export class PlanController {
             next(error)
         }
     }
+
+    static async getById(req: UserRequest, res: Response, next: NextFunction) {
+        try {
+            const planId = parseInt(req.params.planId)
+            const response = await PlanService.getById(req.user!, planId)
+
+            res.status(200).json({
+                data: response
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
 }
