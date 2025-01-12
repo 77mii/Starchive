@@ -3,12 +3,7 @@ package com.visprog.starchive.uiStates
 import com.visprog.starchive.models.BannerModel
 import kotlinx.coroutines.flow.StateFlow
 
-/*interface PullsimDataStatusUIState {
-    object Start : PullsimDataStatusUIState
-    object Loading : PullsimDataStatusUIState
-    object Success : PullsimDataStatusUIState
-    object Error : PullsimDataStatusUIState
-}*/
+
 
 sealed interface PullsimDataStatusUIState {
     data class Success(val data: List<BannerModel>) : PullsimDataStatusUIState

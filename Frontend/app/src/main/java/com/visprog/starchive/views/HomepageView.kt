@@ -1,3 +1,5 @@
+
+
 package com.visprog.starchive.views
 
 import android.content.Context
@@ -43,22 +45,20 @@ fun HomepageView(
     gameId: Int,
     navController: NavHostController,
     context: Context
-
 ) {
     val dataStatus by homepageViewModel.dataStatus.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         homepageViewModel.getBudgets(token, gameId)
-        
     }
 
-    CommonTemplate(currentScreen="Home", onNavigate = { screen ->
+    CommonTemplate(currentScreen = "Home", onNavigate = { screen ->
         when (screen) {
-            "Home" -> navController.navigate(PagesEnum.Home.name)
+            "Home" -> navController.navigate("${PagesEnum.Home.name}/$gameId")
             "Budgeting" -> navController.navigate(PagesEnum.Budgeting.name)
             "Pullsim" -> navController.navigate(PagesEnum.Pullsim.name)
         }
-    }){
+    }) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -213,6 +213,6 @@ fun HomepageView(
 @Composable
 private fun HomepagePreview() {
     StarchiveTheme(dynamicColor = false) {
-        HomepageView(token = "sample_token", gameId = 1,  navController = rememberNavController(), context = LocalContext.current)
+        HomepageView(token = "sample_token", gameId = 1, navController = rememberNavController(), context = LocalContext.current)
     }
 }

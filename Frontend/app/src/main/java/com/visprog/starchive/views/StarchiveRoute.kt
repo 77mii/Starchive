@@ -1,3 +1,5 @@
+
+
 package com.visprog.starchive.views
 
 import android.os.Build
@@ -26,16 +28,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.visprog.starchive.enums.PagesEnum
-import com.visprog.starchive.viewModels.BudgetingViewModel
+import com.visprog.starchive.viewmodels.BudgetingViewModel
 import com.visprog.starchive.viewmodels.AuthViewModel
 import com.visprog.starchive.viewmodels.GameSelectionViewModel
 import com.visprog.starchive.viewmodels.HomepageViewModel
 import com.visprog.starchive.viewmodels.PullsimViewModel
 import com.visprog.starchive.views.HomepageView
-/*import com.visprog.starchive.views.GameSelectionScreen*/
 import com.visprog.starchive.views.LoginView
 import com.visprog.starchive.views.RegisterView
-
 
 @Composable
 fun StarchiveApp(
@@ -52,13 +52,11 @@ fun StarchiveApp(
     NavHost(
         navController = navController,
         startDestination = if (token.value != "Unknown" && token.value != "") {
-            PagesEnum.Home.name
+            PagesEnum.GameChoice.name
         } else {
             PagesEnum.Login.name
         }
-    )
-    {
-
+    ) {
         composable(route = PagesEnum.Login.name) {
             LoginView(
                 modifier = Modifier
@@ -75,17 +73,16 @@ fun StarchiveApp(
                 gameSelectionViewModel = gameSelectionViewModel
             )
         }
-
-        composable(route = PagesEnum.Home.name) {
+        composable(route = "${PagesEnum.Home.name}/{gameId}", arguments = listOf(navArgument("gameId") { type = NavType.IntType })) { backStackEntry ->
+            val gameId = backStackEntry.arguments?.getInt("gameId") ?: 0
             HomepageView(
                 homepageViewModel = homepageViewModel,
                 token = token.value,
-                gameId = 1,
+                gameId = gameId,
                 navController = navController,
                 context = localContext
             )
         }
-
         composable(route = PagesEnum.Budgeting.name) {
             BudgetingView(
                 budgetingViewModel = budgetingViewModel,
@@ -94,7 +91,6 @@ fun StarchiveApp(
                 navController = navController
             )
         }
-
         composable(route = PagesEnum.Signup.name) {
             RegisterView(
                 modifier = Modifier
@@ -105,16 +101,13 @@ fun StarchiveApp(
                 context = localContext
             )
         }
-
         composable(route = PagesEnum.Pullsim.name) {
             PullsimView(
                 pullsimViewModel = pullsimViewModel,
                 token = token.value,
                 gameId = 1,
-                navController = navController,
-
-                )
+                navController = navController
+            )
         }
-
     }
 }

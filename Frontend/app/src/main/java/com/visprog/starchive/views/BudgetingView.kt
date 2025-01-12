@@ -23,7 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.visprog.starchive.enums.PagesEnum
 import com.visprog.starchive.uiStates.BudgetDataStatusUIState
-import com.visprog.starchive.viewModels.BudgetingViewModel
+import com.visprog.starchive.viewmodels.BudgetingViewModel
 import com.visprog.starchive.views.templates.CommonTemplate
 
 @Composable

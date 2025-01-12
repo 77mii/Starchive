@@ -1,3 +1,5 @@
+
+
 package com.visprog.starchive.viewmodels
 
 import android.util.Log
@@ -5,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.contentcapture.ContentCaptureManager.Companion.isEnabled
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -23,9 +24,7 @@ import com.visprog.starchive.enums.PagesEnum
 import com.visprog.starchive.models.ErrorModel
 import com.visprog.starchive.models.UserResponse
 import com.visprog.starchive.repositories.AuthRepository
-import com.visprog.starchive.repositories.NetworkAuthRepository
 import com.visprog.starchive.repositories.UserRepository
-import com.visprog.starchive.services.AuthAPIService
 import com.visprog.starchive.uiStates.AuthenticationStatusUIState
 import com.visprog.starchive.uiStates.AuthenticationUIState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,9 +38,9 @@ import retrofit2.Response
 import java.io.IOException
 
 @OptIn(ExperimentalComposeUiApi::class)
-class AuthViewModel (
-private val authRepository: AuthRepository,
-private val userRepository: UserRepository
+class AuthViewModel(
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private val _authenticationUIState = MutableStateFlow(AuthenticationUIState())
 
@@ -95,6 +94,7 @@ private val userRepository: UserRepository
             }
         }
     }
+
     fun checkRegisterForm() {
         if (usernameInput.isNotEmpty() && passwordInput.isNotEmpty()) {
             _authenticationUIState.update { currentState ->
@@ -107,22 +107,21 @@ private val userRepository: UserRepository
         }
     }
 
-
     fun checkButtonEnabled(isEnabled: Boolean): Color {
-        if (isEnabled) {
-            return Color.Blue
+        return if (isEnabled) {
+            Color.Blue
+        } else {
+            Color.LightGray
         }
-
-        return Color.LightGray
     }
 
-    fun registerUser(navController: NavHostController){
+    fun registerUser(navController: NavHostController) {
         viewModelScope.launch {
             dataStatus = AuthenticationStatusUIState.Loading
 
-            try{
+            try {
                 val call = authRepository.register(usernameInput, passwordInput)
-                call.enqueue(object: Callback<UserResponse>{
+                call.enqueue(object : Callback<UserResponse> {
                     override fun onResponse(call: Call<UserResponse>, res: Response<UserResponse>) {
                         if (res.isSuccessful) {
                             Log.d("response-data", "RESPONSE DATA: ${res.body()}")
@@ -133,7 +132,7 @@ private val userRepository: UserRepository
 
                             resetViewModel()
 
-                            navController.navigate(PagesEnum.Home.name) {
+                            navController.navigate(PagesEnum.GameChoice.name) {
                                 popUpTo(PagesEnum.Signup.name) {
                                     inclusive = true
                                 }
@@ -154,24 +153,21 @@ private val userRepository: UserRepository
                         Log.d("error-data", "ERROR DATA: ${t.localizedMessage}")
                         dataStatus = AuthenticationStatusUIState.Failed(t.localizedMessage as String)
                     }
-
                 })
-            }catch (error: IOException) {
+            } catch (error: IOException) {
                 dataStatus = AuthenticationStatusUIState.Failed(error.localizedMessage as String)
                 Log.d("register-error", "REGISTER ERROR: ${error.localizedMessage}")
             }
         }
     }
 
-    fun loginUser(
-        navController: NavHostController
-    ) {
+    fun loginUser(navController: NavHostController) {
         viewModelScope.launch {
             dataStatus = AuthenticationStatusUIState.Loading
 
             try {
                 val call = authRepository.login(usernameInput, passwordInput)
-                call.enqueue(object: Callback<UserResponse> {
+                call.enqueue(object : Callback<UserResponse> {
                     override fun onResponse(call: Call<UserResponse>, res: Response<UserResponse>) {
                         if (res.isSuccessful) {
                             Log.d("response-data", "RESPONSE DATA: ${res.body()}")
@@ -182,7 +178,7 @@ private val userRepository: UserRepository
 
                             resetViewModel()
 
-                            navController.navigate(PagesEnum.Home.name) {
+                            navController.navigate(PagesEnum.GameChoice.name) {
                                 popUpTo(PagesEnum.Login.name) {
                                     inclusive = true
                                 }
@@ -203,7 +199,6 @@ private val userRepository: UserRepository
                         Log.d("error-data", "ERROR DATA: ${t.localizedMessage}")
                         dataStatus = AuthenticationStatusUIState.Failed(t.localizedMessage as String)
                     }
-
                 })
             } catch (error: IOException) {
                 dataStatus = AuthenticationStatusUIState.Failed(error.localizedMessage as String)
@@ -211,7 +206,6 @@ private val userRepository: UserRepository
             }
         }
     }
-
 
     fun saveUsernameToken(token: String, username: String) {
         viewModelScope.launch {
@@ -221,7 +215,6 @@ private val userRepository: UserRepository
     }
 
     fun resetViewModel() {
-
         changePasswordInput("")
         changeUsernameInput("")
 
@@ -238,32 +231,19 @@ private val userRepository: UserRepository
         }
         dataStatus = AuthenticationStatusUIState.Start
     }
+
     fun clearErrorMessage() {
         dataStatus = AuthenticationStatusUIState.Start
     }
-   /* companion object {
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val application = (this[APPLICATION_KEY] as TodoListApplication)
-                val authenticationRepository = application.container.authenticationRepository
-                val userRepository = application.container.userRepository
-                AuthenticationViewModel(authenticationRepository, userRepository)
-            }
-        }
-    }*/
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as StarchiveApplication)
-
                 val authenticationRepository = application.container.authRepository
-
-
                 val userRepository = application.container.userRepository
                 AuthViewModel(authenticationRepository, userRepository)
             }
         }
     }
 }
-

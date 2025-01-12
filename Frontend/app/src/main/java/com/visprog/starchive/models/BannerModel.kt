@@ -1,4 +1,5 @@
 
+
 package com.visprog.starchive.models
 
 import com.google.gson.annotations.SerializedName
@@ -14,6 +15,5 @@ data class BannerModel(
     @SerializedName("hard_pity") val hardPity: Int?,
     @SerializedName("soft_pity") val softPity: Int?,
     @SerializedName("image_url") val imageUrl: String?,
-    @SerializedName("items") val items: List<BannerItemModel>?,
     @SerializedName("hard_pities") val hardPities: List<HardPityModel>?
 )

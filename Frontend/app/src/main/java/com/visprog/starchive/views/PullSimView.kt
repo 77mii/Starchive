@@ -62,7 +62,7 @@ fun PullsimView(
 
     CommonTemplate(currentScreen = "Pullsim", onNavigate = { screen ->
         when (screen) {
-            "Home" -> navController.navigate(PagesEnum.Home.name)
+            "Home" -> navController.navigate("${PagesEnum.Home.name}/$gameId")
             "Budgeting" -> navController.navigate(PagesEnum.Budgeting.name)
             "Pullsim" -> navController.navigate(PagesEnum.Pullsim.name)
         }
@@ -83,7 +83,7 @@ fun PullsimView(
                     ) {
                         items(pullsim) { banner ->
                             BannerCardTemplate(
-                                firstItem = (banner.items?.firstOrNull()?.bannerId.toString() ?: "No items"),
+                                firstItem = "No items", // Adjust this as needed
                                 bannername = banner.bannerName.toString(),
                                 bannerimage = banner.imageUrl ?: "",
                                 onCardClick = {

@@ -16,12 +16,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.visprog.starchive.R
+import com.visprog.starchive.enums.PagesEnum
 import com.visprog.starchive.viewmodels.GameSelectionViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,14 +81,20 @@ fun GameSelectionScreen(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             games.forEach { game ->
-                GameCard(title = game.gameName, imageRes = R.drawable.ic_launcher_background, navController, game.gameId)
+                GameCard(
+                    title = game.gameName ?: "Unknown Game",
+                    description = game.description,
+                    imageRes = R.drawable.ic_launcher_background,
+                    navController = navController,
+                    gameId = game.gameId
+                )
             }
         }
     }
 }
 
 @Composable
-fun GameCard(title: String, imageRes: Int, navController: NavController, gameId: Int) {
+fun GameCard(title: String, description: String, imageRes: Int, navController: NavController, gameId: Int) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -97,7 +106,7 @@ fun GameCard(title: String, imageRes: Int, navController: NavController, gameId:
             elevation = CardDefaults.cardElevation(8.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { navController.navigate("pullsimselection/$gameId") }
+                .clickable { navController.navigate("${PagesEnum.Home.name}/$gameId") }
         ) {
             Image(
                 painter = painterResource(id = imageRes),
@@ -113,15 +122,27 @@ fun GameCard(title: String, imageRes: Int, navController: NavController, gameId:
             text = title,
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = Color.Black
         )
 
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            text = "Game Description",
+            text = description,
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GameCardPreview() {
+    GameCard(
+        title = "Honkai: Star Rail",
+        description = "A Space Fantasy Turn Based RPG by Hoyoverse",
+        imageRes = R.drawable.ic_launcher_background,
+        navController = NavController(LocalContext.current),
+        gameId = 1
+    )
 }

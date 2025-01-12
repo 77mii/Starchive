@@ -1,4 +1,4 @@
-package com.visprog.starchive.viewModels
+package com.visprog.starchive.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
