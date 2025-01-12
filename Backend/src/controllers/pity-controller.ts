@@ -43,11 +43,12 @@ export class PityController {
             next(error)
         }
     }
-    static async getByBannerIdAndUserId(req: UserRequest, res: Response, next: NextFunction) {
+
+    static async getByBannerIdAndToken(req: UserRequest, res: Response, next: NextFunction) {
         try {
             const bannerId = parseInt(req.params.bannerId)
-            const userId = req.user!.user_id
-            const response = await PityService.getByBannerIdAndUserId(bannerId, userId)
+            const token = req.query.token as string
+            const response = await PityService.getByBannerIdAndToken(bannerId, token)
 
             res.status(200).json({
                 data: response
@@ -56,5 +57,4 @@ export class PityController {
             next(error)
         }
     }
-    
 }

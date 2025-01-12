@@ -22,7 +22,7 @@ model Users {
   Expenses   Expenses[]
   UserGames  UserGames[]
   HardPities HardPity[]
-  token      String?     @db.VarChar(100)
+  token      String?     @db.VarChar(100) @unique
 }
 
 model Games {

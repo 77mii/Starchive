@@ -74,11 +74,22 @@ export class PityService {
 
         return toPityResponse(pity)
     }
-    static async getByBannerIdAndUserId(bannerId: number, userId: number): Promise<PityResponse> {
+
+    static async getByBannerIdAndToken(bannerId: number, token: string): Promise<PityResponse> {
+        const user = await prismaClient.users.findUnique({
+            where: {
+                token: token
+            }
+        })
+
+        if (!user) {
+            throw new ResponseError(404, "User not found")
+        }
+
         const pity = await prismaClient.hardPity.findFirst({
             where: {
                 banner_id: bannerId,
-                user_id: userId
+                user_id: user.user_id
             }
         })
 
