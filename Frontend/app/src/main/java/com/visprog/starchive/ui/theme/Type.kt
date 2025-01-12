@@ -10,7 +10,8 @@ import androidx.compose.ui.unit.sp
 import com.visprog.starchive.R
 
 val Montserrat = FontFamily(
-    Font(R.font.montserrat_variable),
+    Font(R.font.montserrat_variable, FontWeight.Normal),
+    Font(R.font.montserrat_variable, FontWeight.Bold),
     Font(R.font.montserrat_italic_variable, FontWeight.Normal, FontStyle.Italic),
 )
 
@@ -36,6 +37,7 @@ val Typography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
+    
 
     /* Other default text styles to override
     labelSmall = TextStyle(

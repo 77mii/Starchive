@@ -107,8 +107,8 @@ fun BudgetingView(
                                     // Added progress bar for Real Cash
                                     LinearProgressIndicator(
                                         progress = {
-                                            budget.data.remaining_budget.toFloat() /
-                                                    budget.data.allocated_budget.toFloat()
+                                            budget.data.remaining_budget /
+                                                    budget.data.allocated_budget
                                         },
                                         modifier =
                                         Modifier
@@ -138,8 +138,8 @@ fun BudgetingView(
                                     // Added progress bar for Stellar Jades
                                     LinearProgressIndicator(
                                         progress = {
-                                            budget.data.remaining_currency.toFloat() /
-                                                    budget.data.allocated_currency.toFloat()
+                                            budget.data.remaining_currency /
+                                                    budget.data.allocated_currency
                                         },
                                         modifier =
                                         Modifier
@@ -169,8 +169,8 @@ fun BudgetingView(
                                     // Added progress bar for Star Rail Passes
                                     LinearProgressIndicator(
                                         progress = {
-                                            budget.data.remaining_tickets.toFloat() /
-                                                    budget.data.allocated_tickets.toFloat()
+                                            budget.data.remaining_tickets /
+                                                    budget.data.allocated_tickets
                                         },
                                         modifier = Modifier
                                             .fillMaxWidth()
@@ -200,6 +200,7 @@ fun BudgetingView(
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Icon(
                                     imageVector = Icons.Default.KeyboardArrowDown,
+                                    tint = MaterialTheme.colorScheme.primary,
                                     contentDescription = null,
                                     modifier = Modifier.size(48.dp)
                                 )
@@ -226,6 +227,7 @@ fun BudgetingView(
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Icon(
                                     imageVector = Icons.Default.KeyboardArrowUp,
+                                    tint = MaterialTheme.colorScheme.primary,
                                     contentDescription = null,
                                     modifier = Modifier.size(48.dp)
                                 )
@@ -251,6 +253,43 @@ fun BudgetingView(
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .requiredHeight(180.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.secondary)
+            ) {
+                Button(
+                    onClick = { /* TODO: Change to View Plans view */ },
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    )
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            imageVector = Icons.Default.MailOutline,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(48.dp)
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text(
+                            text = "View Plans",
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
             }
         }
