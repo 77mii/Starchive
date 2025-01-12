@@ -1,8 +1,7 @@
-
-
 package com.visprog.starchive.repositories
 
 import com.visprog.starchive.models.BannerModel
+import com.visprog.starchive.models.GeneralDataResponse
 import com.visprog.starchive.models.GeneralResponseModel
 import com.visprog.starchive.services.BannerResponse
 import com.visprog.starchive.services.BannerService
@@ -13,6 +12,7 @@ interface BannerRepository {
     fun getBannersByGameId(token: String, gameId: Int): Call<BannerResponse>
     fun updateBanner(token: String, bannerId: Int, banner: BannerModel): Call<GeneralResponseModel>
     fun getActiveBanners(token: String): Call<BannerResponse>
+    fun getBannerById(token: String, bannerId: Int): Call<GeneralDataResponse<BannerModel>>
 }
 
 class NetworkBannerRepository(
@@ -34,5 +34,8 @@ class NetworkBannerRepository(
     override fun getActiveBanners(token: String): Call<BannerResponse> {
         return bannerService.getActiveBanners(token)
     }
-}
 
+    override fun getBannerById(token: String, bannerId: Int): Call<GeneralDataResponse<BannerModel>> {
+        return bannerService.getBannerById(token, bannerId)
+    }
+}

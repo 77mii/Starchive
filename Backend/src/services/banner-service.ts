@@ -29,6 +29,22 @@ export class BannerService {
 
         return toBannerResponse(banner)
     }
+    static async getById(bannerId: number): Promise<BannerResponse> {
+        const banner = await prismaClient.banners.findUnique({
+            where: {
+                banner_id: bannerId
+            },
+            include: {
+                HardPity: true
+            }
+        })
+
+        if (!banner) {
+            throw new ResponseError(404, "Banner not found")
+        }
+
+        return toBannerResponse(banner)
+    }
 
     static async getByGameId(gameId: number): Promise<BannerResponse[]> {
         const banners = await prismaClient.banners.findMany({

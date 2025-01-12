@@ -1,8 +1,7 @@
-
-
 package com.visprog.starchive.services
 
 import com.visprog.starchive.models.BannerModel
+import com.visprog.starchive.models.GeneralDataResponse
 import com.visprog.starchive.models.GeneralResponseModel
 import retrofit2.Call
 import retrofit2.http.Body
@@ -38,4 +37,10 @@ interface BannerService {
     fun getActiveBanners(
         @Header("X-API-TOKEN") token: String
     ): Call<BannerResponse>
+
+    @GET("/api/bannersbyid/{bannerId}")
+    fun getBannerById(
+        @Header("X-API-TOKEN") token: String,
+        @Path("bannerId") bannerId: Int
+    ): Call<GeneralDataResponse<BannerModel>>
 }

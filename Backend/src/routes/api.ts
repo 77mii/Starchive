@@ -46,6 +46,7 @@ apiRouter.post("/api/banners", BannerController.create)
 apiRouter.get("/api/banners/:gameId(\\d+)", BannerController.getByGameId)
 apiRouter.put("/api/banners/:bannerId(\\d+)", BannerController.update)
 apiRouter.get("/api/banners/active", BannerController.getActive)
+apiRouter.get("/api/bannersbyid/:bannerId(\\d+)", BannerController.getById)
 
 // banner-item
 apiRouter.post("/api/banner-items", BannerItemController.create);
