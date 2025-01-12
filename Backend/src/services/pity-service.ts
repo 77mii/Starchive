@@ -74,4 +74,18 @@ export class PityService {
 
         return toPityResponse(pity)
     }
+    static async getByBannerIdAndUserId(bannerId: number, userId: number): Promise<PityResponse> {
+        const pity = await prismaClient.hardPity.findFirst({
+            where: {
+                banner_id: bannerId,
+                user_id: userId
+            }
+        })
+
+        if (!pity) {
+            throw new ResponseError(404, "Pity not found")
+        }
+
+        return toPityResponse(pity)
+    }
 }

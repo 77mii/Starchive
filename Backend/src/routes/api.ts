@@ -47,8 +47,9 @@ apiRouter.put("/api/banner-items/:bannerId(\\d+)/:itemId(\\d+)", BannerItemContr
 apiRouter.delete("/api/banner-items/:bannerId(\\d+)/:itemId(\\d+)", BannerItemController.delete);
 // pity
 apiRouter.post("/api/pity", PityController.create)
-apiRouter.get("/api/pity/:bannerId(\\d+)", PityController.getByBannerId)
+apiRouter.get("/api/pitybybannerid/:bannerId(\\d+)", PityController.getByBannerId)
 apiRouter.put("/api/pity/:pityId(\\d+)", PityController.update)
+apiRouter.get("/api/pitybybanneridanduserid/:bannerId(\\d+)", PityController.getByBannerIdAndUserId)
 // user-game
 apiRouter.post("/api/user-games", UserGameController.add)
 apiRouter.get("/api/user-games", UserGameController.getByUserId)

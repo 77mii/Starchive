@@ -43,4 +43,17 @@ export class PityController {
             next(error)
         }
     }
+    static async getByBannerIdAndUserId(req: UserRequest, res: Response, next: NextFunction) {
+        try {
+            const bannerId = parseInt(req.params.bannerId)
+            const userId = req.user!.user_id
+            const response = await PityService.getByBannerIdAndUserId(bannerId, userId)
+
+            res.status(200).json({
+                data: response
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
 }
