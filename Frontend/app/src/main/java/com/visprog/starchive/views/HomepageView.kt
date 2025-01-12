@@ -1,5 +1,6 @@
 
 
+
 package com.visprog.starchive.views
 
 import android.content.Context
@@ -52,11 +53,11 @@ fun HomepageView(
         homepageViewModel.getBudgets(token, gameId)
     }
 
-    CommonTemplate(currentScreen = "Home", onNavigate = { screen ->
+    CommonTemplate(currentScreen = "Home", gameId = gameId, onNavigate = { screen, gameId ->
         when (screen) {
             "Home" -> navController.navigate("${PagesEnum.Home.name}/$gameId")
-            "Budgeting" -> navController.navigate(PagesEnum.Budgeting.name)
-            "Pullsim" -> navController.navigate(PagesEnum.Pullsim.name)
+            "Budgeting" -> navController.navigate("${PagesEnum.Budgeting.name}/$gameId")
+            "Pullsim" -> navController.navigate("${PagesEnum.Pullsim.name}/$gameId")
         }
     }) {
         Column(

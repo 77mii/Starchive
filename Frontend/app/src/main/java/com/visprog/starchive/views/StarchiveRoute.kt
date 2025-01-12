@@ -83,11 +83,12 @@ fun StarchiveApp(
                 context = localContext
             )
         }
-        composable(route = PagesEnum.Budgeting.name) {
+        composable(route = "${PagesEnum.Budgeting.name}/{gameId}", arguments = listOf(navArgument("gameId") { type = NavType.IntType })) { backStackEntry ->
+            val gameId = backStackEntry.arguments?.getInt("gameId") ?: 0
             BudgetingView(
                 budgetingViewModel = budgetingViewModel,
                 token = token.value,
-                gameId = 1,
+                gameId = gameId,
                 navController = navController
             )
         }
@@ -101,11 +102,12 @@ fun StarchiveApp(
                 context = localContext
             )
         }
-        composable(route = PagesEnum.Pullsim.name) {
+        composable(route = "${PagesEnum.Pullsim.name}/{gameId}", arguments = listOf(navArgument("gameId") { type = NavType.IntType })) { backStackEntry ->
+            val gameId = backStackEntry.arguments?.getInt("gameId") ?: 0
             PullsimView(
                 pullsimViewModel = pullsimViewModel,
                 token = token.value,
-                gameId = 1,
+                gameId = gameId,
                 navController = navController
             )
         }

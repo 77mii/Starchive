@@ -1,3 +1,5 @@
+
+
 package com.visprog.starchive.views
 
 import androidx.compose.foundation.BorderStroke
@@ -21,7 +23,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun NavigationBar(
     currentScreen: String,
-    onNavigate: (String) -> Unit
+    gameId: Int,
+    onNavigate: (String, Int) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -33,7 +36,7 @@ fun NavigationBar(
             val isSelected = currentScreen == screen
 
             Button(
-                onClick = { onNavigate(screen) },
+                onClick = { onNavigate(screen, gameId) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (isSelected) MaterialTheme.colorScheme.secondary else Color.Transparent
                 ),
@@ -56,5 +59,5 @@ fun NavigationBar(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun NavigationBarPreview() {
-    NavigationBar(currentScreen = "Home", onNavigate = {})
+    NavigationBar(currentScreen = "Home", gameId = 1, onNavigate = { _, _ -> })
 }

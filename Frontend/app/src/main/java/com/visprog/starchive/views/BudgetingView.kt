@@ -1,3 +1,6 @@
+
+
+
 package com.visprog.starchive.views
 
 import androidx.compose.foundation.background
@@ -39,11 +42,12 @@ fun BudgetingView(
 
     CommonTemplate(
         currentScreen = "Budgeting",
-        onNavigate = { screen ->
+        gameId = gameId,
+        onNavigate = { screen, gameId ->
             when (screen) {
-                "Home" -> navController.navigate(PagesEnum.Home.name)
-                "Budgeting" -> navController.navigate(PagesEnum.Budgeting.name)
-                "Pullsim" -> navController.navigate(PagesEnum.Pullsim.name)
+                "Home" -> navController.navigate("${PagesEnum.Home.name}/$gameId")
+                "Budgeting" -> navController.navigate("${PagesEnum.Budgeting.name}/$gameId")
+                "Pullsim" -> navController.navigate("${PagesEnum.Pullsim.name}/$gameId")
             }
         }
     ) {
@@ -57,11 +61,6 @@ fun BudgetingView(
                         Card(
                             modifier =
                             Modifier
-                                .background(
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    shape = RoundedCornerShape(16.dp)
-                                )
-                                .padding(vertical = 16.dp, horizontal = 16.dp)
                                 .fillMaxWidth()
                                 .requiredHeight(265.dp)
                                 .border(
@@ -200,18 +199,16 @@ fun BudgetingView(
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Icon(
-                                    imageVector = Icons.Default.KeyboardArrowUp,
+                                    imageVector = Icons.Default.KeyboardArrowDown,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.size(48.dp)
                                 )
-                                Spacer(modifier = Modifier.height(4.dp))
                                 Text(
                                     text = "Withdraw",
-                                    fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
                                     fontSize = 20.sp,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontWeight = FontWeight.Bold
+                                    fontWeight = FontWeight.Bold,
+                                    fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             }
                         }
@@ -228,60 +225,21 @@ fun BudgetingView(
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Icon(
-                                    imageVector = Icons.Default.KeyboardArrowDown,
+                                    imageVector = Icons.Default.KeyboardArrowUp,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.size(48.dp)
                                 )
-                                Spacer(modifier = Modifier.height(4.dp))
                                 Text(
                                     text = "Deposit",
-                                    fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
                                     fontSize = 20.sp,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .requiredHeight(180.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(MaterialTheme.colorScheme.secondary)
-                    ) {
-                        Button(
-                            onClick = { /* TODO: Change to View Plans view */ },
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondary
-                            )
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Icon(
-                                    imageVector = Icons.Default.MailOutline,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary,
-                                    modifier = Modifier.size(48.dp)
-                                )
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = "View Plans",
+                                    fontWeight = FontWeight.Bold,
                                     fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
-                                    fontSize = 20.sp,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontWeight = FontWeight.Bold
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                             }
                         }
                     }
                 }
-
-
                 is BudgetDataStatusUIState.Failed -> {
                     Text(
                         text = "Failed to load budget data",
@@ -289,7 +247,6 @@ fun BudgetingView(
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
                 }
-
                 else -> {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.CenterHorizontally)
