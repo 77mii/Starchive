@@ -2,7 +2,7 @@ package com.visprog.starchive.enums
 
 
     enum class PagesEnum {
-        Home,
+        Homepage,
         Signup,
         Login,
         GameChoice,

@@ -10,7 +10,7 @@ interface BudgetRepository {
     fun createBudget(budget: BudgetModel): Call<GeneralResponseModel>
     fun getBudgetsByUserId(token: String): Call<List<BudgetModel>>
     fun getBudgetByUserIdAndGameId(token: String, gameId: Int): Call<GetBudgetResponse>
-    fun updateBudget(budgetId: Int, budget: BudgetModel): Call<GeneralResponseModel>
+    fun updateBudget(token: String, budgetId: Int, budget: BudgetModel): Call<GetBudgetResponse>
 }
 
 class NetworkBudgetRepository(
@@ -29,7 +29,7 @@ class NetworkBudgetRepository(
         return budgetService.getBudgetByUserIdAndGameId(token, gameId)
     }
 
-    override fun updateBudget(budgetId: Int, budget: BudgetModel): Call<GeneralResponseModel> {
-        return budgetService.updateBudget(budgetId, budget)
+    override fun updateBudget(token: String, budgetId: Int, budget: BudgetModel): Call<GetBudgetResponse> {
+        return budgetService.updateBudget(token, budgetId, budget)
     }
 }

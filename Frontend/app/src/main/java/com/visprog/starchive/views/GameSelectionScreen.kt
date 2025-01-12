@@ -106,7 +106,7 @@ fun GameCard(title: String, description: String, imageRes: Int, navController: N
             elevation = CardDefaults.cardElevation(8.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { navController.navigate("${PagesEnum.Home.name}/$gameId") }
+                .clickable { navController.navigate("${PagesEnum.Homepage.name}/$gameId") }
         ) {
             Image(
                 painter = painterResource(id = imageRes),

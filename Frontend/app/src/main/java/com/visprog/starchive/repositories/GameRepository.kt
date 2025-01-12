@@ -3,6 +3,7 @@ package com.visprog.starchive.repositories
 
 import com.visprog.starchive.models.GameModel
 import com.visprog.starchive.models.GeneralResponseModel
+import com.visprog.starchive.models.GetGameResponse
 import com.visprog.starchive.services.GameResponse
 import com.visprog.starchive.services.GameService
 import retrofit2.Call
@@ -10,14 +11,13 @@ import retrofit2.Call
 interface GameRepository {
     fun createGame(token: String, game: GameModel): Call<GeneralResponseModel>
     fun getAllGames(token: String): Call<GameResponse>
-    fun getGameById(token: String, gameId: Int): Call<GameModel>
+    fun getGameById(token: String, gameId: Int): Call<GetGameResponse>
     fun updateGame(token: String, gameId: Int, game: GameModel): Call<GeneralResponseModel>
 }
 
 class NetworkGameRepository(
     private val gameService: GameService
 ): GameRepository {
-
     override fun createGame(token: String, game: GameModel): Call<GeneralResponseModel> {
         return gameService.createGame(token, game)
     }
@@ -26,7 +26,7 @@ class NetworkGameRepository(
         return gameService.getAllGames(token)
     }
 
-    override fun getGameById(token: String, gameId: Int): Call<GameModel> {
+    override fun getGameById(token: String, gameId: Int): Call<GetGameResponse> {
         return gameService.getGameById(token, gameId)
     }
 

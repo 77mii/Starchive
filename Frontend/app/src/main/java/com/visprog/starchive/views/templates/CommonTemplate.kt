@@ -92,7 +92,7 @@ fun CommonTemplate(
 @Composable
 fun CommonTemplatePreview() {
     StarchiveTheme(dynamicColor = false) {
-        CommonTemplate(currentScreen = "Home", gameId = 1, onNavigate = { _, _ -> }) {
+        CommonTemplate(currentScreen = "Homepage", gameId = 1, onNavigate = { _, _ -> }) {
             Text("Content")
         }
     }

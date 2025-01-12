@@ -31,7 +31,7 @@ fun NavigationBar(
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        val screens = listOf("Home", "Budgeting", "Pullsim")
+        val screens = listOf("Homepage", "Budgeting", "Pullsim")
         screens.forEach { screen ->
             val isSelected = currentScreen == screen
 
@@ -59,5 +59,5 @@ fun NavigationBar(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun NavigationBarPreview() {
-    NavigationBar(currentScreen = "Home", gameId = 1, onNavigate = { _, _ -> })
+    NavigationBar(currentScreen = "Homepage", gameId = 1, onNavigate = { _, _ -> })
 }

@@ -60,7 +60,7 @@ fun StarchiveApp(
                 gameSelectionViewModel = gameSelectionViewModel
             )
         }
-        composable(route = "${PagesEnum.Home.name}/{gameId}", arguments = listOf(navArgument("gameId") { type = NavType.IntType })) { backStackEntry ->
+        composable(route = "${PagesEnum.Homepage.name}/{gameId}", arguments = listOf(navArgument("gameId") { type = NavType.IntType })) { backStackEntry ->
             val gameId = backStackEntry.arguments?.getInt("gameId") ?: 0
             HomepageView(
                 homepageViewModel = homepageViewModel,

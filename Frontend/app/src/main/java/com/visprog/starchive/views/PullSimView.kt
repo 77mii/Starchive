@@ -63,7 +63,7 @@ fun PullsimView(
 
     CommonTemplate(currentScreen = "Pullsim", gameId = gameId, onNavigate = { screen, gameId ->
         when (screen) {
-            "Home" -> navController.navigate("${PagesEnum.Home.name}/$gameId")
+            "Homepage" -> navController.navigate("${PagesEnum.Homepage.name}/$gameId")
             "Budgeting" -> navController.navigate("${PagesEnum.Budgeting.name}/$gameId")
             "Pullsim" -> navController.navigate("${PagesEnum.Pullsim.name}/$gameId")
         }
