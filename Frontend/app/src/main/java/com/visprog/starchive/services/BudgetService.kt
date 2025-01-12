@@ -21,7 +21,8 @@ interface BudgetService {
 
     @PUT("/api/budgets/{budgetId}")
     fun updateBudget(
+        @Header("X-API-TOKEN") token: String,
         @Path("budgetId") budgetId: Int,
         @Body budget: BudgetModel
-    ): Call<GeneralResponseModel>
+    ): Call<GetBudgetResponse>
 }

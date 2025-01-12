@@ -20,10 +20,12 @@ import com.visprog.starchive.models.GeneralResponseModel
 import com.visprog.starchive.repositories.ArticleRepository
 import com.visprog.starchive.repositories.BannerRepository
 import com.visprog.starchive.repositories.BudgetRepository
+import com.visprog.starchive.repositories.GameRepository
 import com.visprog.starchive.repositories.UserRepository
 import com.visprog.starchive.uiStates.ArticleDataStatusUIState
 import com.visprog.starchive.uiStates.BannerDataStatusUIState
 import com.visprog.starchive.uiStates.BudgetDataStatusUIState
+import com.visprog.starchive.uiStates.GameDataStatusUIState
 import com.visprog.starchive.uiStates.StringDataStatusUIState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,6 +43,7 @@ class HomepageViewModel(
         private val budgetRepository: BudgetRepository,
         private val articleRepository: ArticleRepository,
         private val bannerRepository: BannerRepository,
+        private val gameRepository: GameRepository,
         private val userRepository: UserRepository
 ) : ViewModel() {
     private val _budgetDataStatus =
@@ -54,6 +57,9 @@ class HomepageViewModel(
     private val _bannerDataStatus =
             MutableStateFlow<BannerDataStatusUIState>(BannerDataStatusUIState.Start)
     val bannerDataStatus: StateFlow<BannerDataStatusUIState> = _bannerDataStatus
+
+    private val _gameDataStatus = MutableStateFlow<GameDataStatusUIState>(GameDataStatusUIState.Start)
+    val gameDataStatus: StateFlow<GameDataStatusUIState> = _gameDataStatus
 
     var logoutStatus: StringDataStatusUIState by mutableStateOf(StringDataStatusUIState.Start)
         private set
@@ -142,6 +148,30 @@ class HomepageViewModel(
         }
     }
 
+    fun getGame(token: String, gameId: Int) {
+        viewModelScope.launch {
+            _gameDataStatus.value = GameDataStatusUIState.Loading
+            try {
+                withContext(Dispatchers.IO) {
+                    val response = gameRepository.getGameById(token, gameId).execute()
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            _gameDataStatus.value = GameDataStatusUIState.Success(it)
+                        }
+                            ?: run {
+                                _gameDataStatus.value =
+                                    GameDataStatusUIState.Failed("No data available")
+                            }
+                    } else {
+                        _gameDataStatus.value = GameDataStatusUIState.Failed("Failed to fetch data")
+                    }
+                }
+            } catch (e: Exception) {
+                _gameDataStatus.value = GameDataStatusUIState.Failed(e.message ?: "Unknown error")
+            }
+        }
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -150,7 +180,8 @@ class HomepageViewModel(
                 val budgetRepository = application.container.budgetRepository
                 val userRepository = application.container.userRepository
                 val bannerRepository = application.container.bannerRepository
-                HomepageViewModel(budgetRepository, articleRepository, bannerRepository, userRepository)
+                val gameRepository = application.container.gameRepository
+                HomepageViewModel(budgetRepository, articleRepository, bannerRepository, gameRepository, userRepository)
             }
         }
     }
@@ -202,7 +233,7 @@ class HomepageViewModel(
                                     saveUsernameToken("Unknown", "Unknown")
 
                                     navController.navigate(PagesEnum.Login.name) {
-                                        popUpTo(PagesEnum.Home.name) { inclusive = true }
+                                        popUpTo(PagesEnum.Homepage.name) { inclusive = true }
                                     }
                                 } else {
                                     val errorMessage =

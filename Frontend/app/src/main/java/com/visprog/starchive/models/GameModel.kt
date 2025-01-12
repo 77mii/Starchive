@@ -3,6 +3,10 @@ package com.visprog.starchive.models
 
 import com.google.gson.annotations.SerializedName
 
+data class GetGameResponse(
+    val data: GameModel
+)
+
 data class GameModel(
     @SerializedName("game_id") val gameId: Int,
     @SerializedName("game_name") val gameName: String?,

@@ -3,6 +3,7 @@ package com.visprog.starchive.services
 
 import com.visprog.starchive.models.GameModel
 import com.visprog.starchive.models.GeneralResponseModel
+import com.visprog.starchive.models.GetGameResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -31,7 +32,7 @@ interface GameService {
     fun getGameById(
         @Header("X-API-TOKEN") token: String,
         @Path("gameId") gameId: Int
-    ): Call<GameModel>
+    ): Call<GetGameResponse>
 
     @PUT("/api/games/{gameId}")
     fun updateGame(

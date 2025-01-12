@@ -1,5 +1,7 @@
 package com.visprog.starchive.models
 
+import com.google.gson.annotations.SerializedName
+
 data class GetAllBudgetResponse(
     val data: List<BudgetModel>
 )
@@ -9,8 +11,8 @@ data class GetBudgetResponse(
 )
 
 data class BudgetModel(
-    val budgetId: Int,
-    val gameId: Int,
+    @SerializedName("budget_id") val budgetId: Int,
+    @SerializedName("game_id") val gameId: Int,
     val allocated_budget: Float,
     val allocated_currency: Float,
     val allocated_tickets: Float,
