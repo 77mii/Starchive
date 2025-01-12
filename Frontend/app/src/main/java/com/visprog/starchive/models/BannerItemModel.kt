@@ -1,8 +1,11 @@
 
+
 package com.visprog.starchive.models
 
+import com.google.gson.annotations.SerializedName
+
 data class BannerItemModel(
-    val bannerId: Int,
-    val itemId: Int,
-    val acquireRate: Float
+    @SerializedName("banner_id") val bannerId: Int,
+    @SerializedName("item_id") val itemId: Int,
+    @SerializedName("acquire_rate") val acquireRate: Float
 )

@@ -41,4 +41,13 @@ export class ItemController {
             next(error)
         }
     }
+    static async getById(req: Request, res: Response, next: NextFunction) {
+        try {
+            const itemId = parseInt(req.params.itemId)
+            const response = await ItemService.getById(itemId)
+            res.status(200).json({ data: response })
+        } catch (error) {
+            next(error)
+        }
+    }
 }

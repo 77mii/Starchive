@@ -55,8 +55,9 @@ apiRouter.get("/api/user-games", UserGameController.getByUserId)
 apiRouter.delete("/api/user-games/:gameId(\\d+)", UserGameController.remove)
 // item
 apiRouter.post("/api/items", ItemController.create)
-apiRouter.get("/api/items/:gameId(\\d+)", ItemController.getByGameId)
+apiRouter.get("/api/itemsbygameid/:gameId(\\d+)", ItemController.getByGameId)
 apiRouter.get("/api/banner-items/:bannerId(\\d+)", ItemController.getByBannerId)
+apiRouter.get("/api/itemsbyitemid/:itemId(\\d+)", ItemController.getById)
 // analytics
 apiRouter.get("/api/analytics/spending/:gameId(\\d+)", AnalyticsController.getSpendingAnalysis)
 apiRouter.get("/api/analytics/pity-history/:bannerId(\\d+)", AnalyticsController.getPityHistory)

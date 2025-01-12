@@ -40,4 +40,17 @@ export class ItemService {
 
         return bannerItems.map(bannerItem => toBannerItemResponse(bannerItem))
     }
+    static async getById(itemId: number): Promise<ItemResponse> {
+        const item = await prismaClient.items.findUnique({
+            where: {
+                item_id: itemId
+            }
+        })
+
+        if (!item) {
+            throw new ResponseError(404, "Item not found")
+        }
+
+        return toItemResponse(item)
+    }
 }

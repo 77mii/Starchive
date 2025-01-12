@@ -34,6 +34,106 @@ import com.visprog.starchive.viewmodels.PullsimViewModel
 import com.visprog.starchive.views.templates.BannerCardTemplate
 import com.visprog.starchive.views.templates.CommonTemplate
 
+// @Composable
+// fun PullsimView(
+//     pullsimViewModel: PullsimViewModel = viewModel(factory = HomepageViewModel.Factory),
+//     token: String,
+//     gameId: Int,
+//     navController: NavHostController
+// ) {
+//     val context = LocalContext.current
+//     val dataStatus by pullsimViewModel.dataStatus.collectAsState()
+
+//     LaunchedEffect(token) {
+//         pullsimViewModel.getBannersbyGameId(token, gameId)
+//     }
+
+//     LaunchedEffect(dataStatus) {
+//         when (dataStatus) {
+//             is PullsimDataStatusUIState.Failed -> {
+//                 val errorMessage = (dataStatus as PullsimDataStatusUIState.Failed).errorMessage
+//                 Toast.makeText(context, "DATA ERROR: $errorMessage", Toast.LENGTH_SHORT).show()
+//                 Log.d("PullsimView", "DATA ERROR: $errorMessage")
+//                 pullsimViewModel.clearDataErrorMessage()
+//             }
+//             else -> {}
+//         }
+//     }
+
+//     CommonTemplate(currentScreen = "Pullsim", gameId = gameId, onNavigate = { screen, gameId ->
+//         when (screen) {
+//             "Home" -> navController.navigate("${PagesEnum.Home.name}/$gameId")
+//             "Budgeting" -> navController.navigate("${PagesEnum.Budgeting.name}/$gameId")
+//             "Pullsim" -> navController.navigate("${PagesEnum.Pullsim.name}/$gameId")
+//         }
+//     }) {
+//         Column(
+//             modifier = Modifier
+//                 .fillMaxSize()
+//                 .padding(top = 32.dp)
+//         ) {
+//             when (dataStatus) {
+//                 is PullsimDataStatusUIState.Success -> {
+//                     val pullsim = (dataStatus as PullsimDataStatusUIState.Success).data
+//                     LazyColumn(
+//                         flingBehavior = ScrollableDefaults.flingBehavior(),
+//                         modifier = Modifier
+//                             .padding(vertical = 8.dp)
+//                             .clip(RoundedCornerShape(10.dp))
+//                     ) {
+//                         items(pullsim) { banner ->
+//                             BannerCardTemplate(
+//                                 firstItem = "No items", // Adjust this as needed
+//                                 bannername = banner.bannerName.toString(),
+//                                 bannerimage = banner.imageUrl ?: "",
+//                                 onCardClick = {
+//                                     // Handle card click
+//                                 },
+//                                 modifier = Modifier
+//                                     .padding(bottom = 12.dp)
+//                             )
+//                         }
+//                     }
+//                 }
+//                 is PullsimDataStatusUIState.Loading -> {
+//                     CircularProgressIndicator(
+//                         modifier = Modifier
+//                             .padding(16.dp)
+//                             .size(50.dp)
+//                     )
+//                 }
+//                 is PullsimDataStatusUIState.Failed -> {
+//                     Text(
+//                         text = "Failed to load pullsim data",
+//                         style = MaterialTheme.typography.bodyLarge,
+//                         fontWeight = FontWeight.Bold,
+//                         fontSize = 24.sp,
+//                         modifier = Modifier.padding(16.dp)
+//                     )
+//                 }
+//                 is PullsimDataStatusUIState.Start -> {
+//                     Text(
+//                         text = "Start loading pullsim data",
+//                         style = MaterialTheme.typography.bodyLarge,
+//                         fontWeight = FontWeight.Bold,
+//                         fontSize = 24.sp,
+//                         modifier = Modifier.padding(16.dp)
+//                     )
+//                 }
+//                 else -> {
+//                     Text(
+//                         text = "No data available",
+//                         style = MaterialTheme.typography.bodyLarge,
+//                         fontWeight = FontWeight.Bold,
+//                         fontSize = 24.sp,
+//                         modifier = Modifier.padding(16.dp)
+//                     )
+//                 }
+//             }
+//         }
+//     }
+// }
+
 @Composable
 fun PullsimView(
     pullsimViewModel: PullsimViewModel = viewModel(factory = HomepageViewModel.Factory),
@@ -87,7 +187,7 @@ fun PullsimView(
                                 bannername = banner.bannerName.toString(),
                                 bannerimage = banner.imageUrl ?: "",
                                 onCardClick = {
-                                    // Handle card click
+                                    navController.navigate("${PagesEnum.PullsimBanner.name}/${banner.bannerId}")
                                 },
                                 modifier = Modifier
                                     .padding(bottom = 12.dp)

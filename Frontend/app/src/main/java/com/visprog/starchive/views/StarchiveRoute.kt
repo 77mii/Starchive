@@ -111,5 +111,12 @@ fun StarchiveApp(
                 navController = navController
             )
         }
+        composable(route = "${PagesEnum.PullsimBanner.name}/{bannerId}", arguments = listOf(navArgument("bannerId") { type = NavType.IntType })) { backStackEntry ->
+            val bannerId = backStackEntry.arguments?.getInt("bannerId") ?: 0
+            PullsimBannerView(
+                bannerId = bannerId,
+                navController = navController
+            )
+        }
     }
 }
