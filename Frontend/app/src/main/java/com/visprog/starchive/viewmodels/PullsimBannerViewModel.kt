@@ -9,8 +9,8 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.visprog.starchive.StarchiveApplication
 import com.visprog.starchive.models.BannerItemModel
+import com.visprog.starchive.models.GeneralDataResponse
 import com.visprog.starchive.models.ItemModel
-import com.visprog.starchive.models.ItemResponse
 import com.visprog.starchive.repositories.BannerItemRepository
 import com.visprog.starchive.repositories.ItemRepository
 import com.visprog.starchive.repositories.UserRepository
@@ -50,8 +50,8 @@ class PullsimBannerViewModel(
                                 val bannerItemsWithDetails = mutableListOf<Pair<BannerItemModel, ItemModel?>>()
 
                                 bannerItems.forEach { bannerItem ->
-                                    itemRepository.getItemById(tokenValue, bannerItem.itemId).enqueue(object : Callback<ItemResponse> {
-                                        override fun onResponse(call: Call<ItemResponse>, response: Response<ItemResponse>) {
+                                    itemRepository.getItemById(tokenValue, bannerItem.itemId).enqueue(object : Callback<GeneralDataResponse<ItemModel>> {
+                                        override fun onResponse(call: Call<GeneralDataResponse<ItemModel>>, response: Response<GeneralDataResponse<ItemModel>>) {
                                             if (response.isSuccessful) {
                                                 val item = response.body()?.data
                                                 Log.d("PullsimBannerViewModel", "Raw item data: ${response.body()}")
@@ -63,7 +63,7 @@ class PullsimBannerViewModel(
                                             }
                                         }
 
-                                        override fun onFailure(call: Call<ItemResponse>, t: Throwable) {
+                                        override fun onFailure(call: Call<GeneralDataResponse<ItemModel>>, t: Throwable) {
                                             Log.e("PullsimBannerViewModel", "Item request failed", t)
                                         }
                                     })
