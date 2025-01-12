@@ -35,9 +35,14 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             StarchiveTheme(dynamicColor = false) {
-            /*StarchiveApplication()*/
-            StarchiveApp()
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .systemBarsPadding()
+                ) {
+                    StarchiveApp()
                 }
+            }
         }
     }
 }
