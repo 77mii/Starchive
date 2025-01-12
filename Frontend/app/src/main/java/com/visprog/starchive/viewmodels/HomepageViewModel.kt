@@ -22,7 +22,7 @@ import com.visprog.starchive.repositories.BannerRepository
 import com.visprog.starchive.repositories.BudgetRepository
 import com.visprog.starchive.repositories.GameRepository
 import com.visprog.starchive.repositories.UserRepository
-import com.visprog.starchive.uiStates.ArticleDataStatusUIState
+import com.visprog.starchive.uiStates.ArticlesDataStatusUIState
 import com.visprog.starchive.uiStates.BannerDataStatusUIState
 import com.visprog.starchive.uiStates.BudgetDataStatusUIState
 import com.visprog.starchive.uiStates.GameDataStatusUIState
@@ -51,8 +51,8 @@ class HomepageViewModel(
     val budgetDataStatus: StateFlow<BudgetDataStatusUIState> = _budgetDataStatus
 
     private val _articleDataStatus =
-            MutableStateFlow<ArticleDataStatusUIState>(ArticleDataStatusUIState.Start)
-    val articleDataStatus: StateFlow<ArticleDataStatusUIState> = _articleDataStatus
+            MutableStateFlow<ArticlesDataStatusUIState>(ArticlesDataStatusUIState.Start)
+    val articleDataStatus: StateFlow<ArticlesDataStatusUIState> = _articleDataStatus
 
     private val _bannerDataStatus =
             MutableStateFlow<BannerDataStatusUIState>(BannerDataStatusUIState.Start)
@@ -98,7 +98,7 @@ class HomepageViewModel(
 
     fun getArticles(token: String, gameId: Int) {
         viewModelScope.launch {
-            _articleDataStatus.value = ArticleDataStatusUIState.Loading
+            _articleDataStatus.value = ArticlesDataStatusUIState.Loading
             try {
                 withContext(Dispatchers.IO) {
                     val response =
@@ -106,18 +106,18 @@ class HomepageViewModel(
                     if (response.isSuccessful) {
                         response.body()?.let {
                             Log.d("HomepageViewModel", "Articles fetched successfully: $it")
-                            _articleDataStatus.value = ArticleDataStatusUIState.Success(it)
+                            _articleDataStatus.value = ArticlesDataStatusUIState.Success(it)
                         } ?: run {
                             Log.d("HomepageViewModel", "No data available")
-                            _articleDataStatus.value = ArticleDataStatusUIState.Failed("No data available")
+                            _articleDataStatus.value = ArticlesDataStatusUIState.Failed("No data available")
                         }
                     } else {
                         Log.d("HomepageViewModel", "Failed to fetch data: ${response.errorBody()?.string()}")
-                        _articleDataStatus.value = ArticleDataStatusUIState.Failed("Failed to fetch data")
+                        _articleDataStatus.value = ArticlesDataStatusUIState.Failed("Failed to fetch data")
                     }
                 }
             } catch (e: Exception) {
-                _articleDataStatus.value = ArticleDataStatusUIState.Failed(e.message ?: "Unknown error")
+                _articleDataStatus.value = ArticlesDataStatusUIState.Failed(e.message ?: "Unknown error")
             }
         }
     }

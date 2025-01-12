@@ -42,7 +42,7 @@ import coil3.request.crossfade
 import com.visprog.starchive.R
 import com.visprog.starchive.enums.PagesEnum
 import com.visprog.starchive.ui.theme.StarchiveTheme
-import com.visprog.starchive.uiStates.ArticleDataStatusUIState
+import com.visprog.starchive.uiStates.ArticlesDataStatusUIState
 import com.visprog.starchive.uiStates.BannerDataStatusUIState
 import com.visprog.starchive.uiStates.BudgetDataStatusUIState
 import com.visprog.starchive.uiStates.GameDataStatusUIState
@@ -266,9 +266,9 @@ fun HomepageView(
                 .padding(end = 20.dp)) {
                 Row {
                     when (articleDataStatus) {
-                        is ArticleDataStatusUIState.Success -> {
+                        is ArticlesDataStatusUIState.Success -> {
                             val articles =
-                                (articleDataStatus as ArticleDataStatusUIState.Success)
+                                (articleDataStatus as ArticlesDataStatusUIState.Success)
                                     .data
                                     .data
                             LazyColumn(modifier = Modifier.padding(end = 8.dp)) {
@@ -286,9 +286,32 @@ fun HomepageView(
                                                 MaterialTheme.colorScheme
                                                     .secondary
                                             )
-                                            .clickable { /* TODO: handle click to article */
+                                            .clickable { navController.navigate("${PagesEnum.News.name}/${article.article_id}")
                                             },
                                     ) {
+                                        AsyncImage(
+                                            model =
+                                            ImageRequest.Builder(LocalContext.current)
+                                                .data("https://cdn.oneesports.gg/cdn-data/2024/12/HonkaiStarRail_Amphoreus_Trailblazer_Stelle_Caelus_KeyVisual-1536x864.jpg")
+                                                .crossfade(true)
+                                                .build(),
+                                            contentDescription = "Article Image",
+                                            modifier = Modifier.fillMaxSize(),
+                                            contentScale = ContentScale.Crop,
+                                            alignment = Alignment.Center
+                                        )
+
+                                        Box(
+                                            modifier =
+                                            Modifier
+                                                .fillMaxSize()
+                                                .background(
+                                                    Color.Black.copy(
+                                                        alpha = 0.4f
+                                                    )
+                                                )
+                                        )
+
                                         Column(
                                             modifier = Modifier
                                                 .fillMaxSize()
@@ -306,7 +329,7 @@ fun HomepageView(
                             }
                         }
 
-                        is ArticleDataStatusUIState.Failed -> {
+                        is ArticlesDataStatusUIState.Failed -> {
                             Text(text = "Failed to load article data", color = Color.Red)
                         }
 
@@ -337,7 +360,7 @@ fun HomepageView(
                                                 MaterialTheme.colorScheme
                                                     .secondary
                                             )
-                                            .clickable { /* TODO: handle click to banner */
+                                            .clickable {
                                             },
                                     ) {
                                         AsyncImage(

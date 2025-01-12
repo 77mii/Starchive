@@ -105,5 +105,12 @@ fun StarchiveApp(
                 navController = navController
             )
         }
+        composable(route = "${PagesEnum.News.name}/{articleId}", arguments = listOf(navArgument("articleId") { type = NavType.IntType })) { backStackEntry ->
+            val articleId = backStackEntry.arguments?.getInt("articleId") ?: 0
+            ArticleView(
+                token = token.value,
+                articleId = articleId
+            )
+        }
     }
 }
