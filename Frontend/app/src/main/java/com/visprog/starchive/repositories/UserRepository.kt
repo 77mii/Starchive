@@ -10,6 +10,8 @@ import com.visprog.starchive.services.UserService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import retrofit2.Call
+import com.visprog.starchive.models.GeneralDataResponse
+import com.visprog.starchive.models.UserModel
 
 interface UserRepository {
     val currentUserToken: Flow<String>
@@ -20,6 +22,8 @@ interface UserRepository {
     suspend fun saveUserToken(token: String)
 
     suspend fun saveUsername(username: String)
+
+    fun getUserIdByToken(token: String): Call<GeneralDataResponse<UserModel>>
 }
 
 class NetworkUserRepository(
@@ -54,5 +58,9 @@ class NetworkUserRepository(
 
     override fun logout(token: String): Call<GeneralResponseModel> {
         return userService.logout(token)
+    }
+
+    override fun getUserIdByToken(token: String): Call<GeneralDataResponse<UserModel>> {
+        return userService.getUserIdByToken(token, token)
     }
 }

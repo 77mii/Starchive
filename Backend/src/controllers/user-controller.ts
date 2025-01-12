@@ -57,4 +57,16 @@ export class UserController {
           next(error);
         }
       }
+      static async getUserIdByToken(req: Request, res: Response, next: NextFunction) {
+        try {
+            const token = req.params.token
+            const userId = await UserService.getUserIdByToken(token)
+
+            res.status(200).json({
+                data: { userId },
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
 }

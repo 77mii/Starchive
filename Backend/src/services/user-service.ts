@@ -37,12 +37,15 @@ export class UserService {
             10
         )
 
+        // generate token
+        const token = uuid()
+
         // add user to db
         const user = await prismaClient.users.create({
             data: {
                 username: registerRequest.username,
                 password: registerRequest.password,
-                token: uuid(),
+                token: token,
             },
         })
 
@@ -87,14 +90,14 @@ export class UserService {
     }
 
     static async logout(user: Users): Promise<string> {
-        const result = await prismaClient.users.update({
-            where: {
-                user_id: user.user_id,
-            },
-            data: {
-                token: null,
-            },
-        })
+        // const result = await prismaClient.users.update({
+        //     where: {
+        //         user_id: user.user_id,
+        //     },
+        //     data: {
+        //         token: null,
+        //     },
+        // })
 
         return "Logout Successful!"
     }
@@ -109,4 +112,17 @@ export class UserService {
           },
         });
       }
+      static async getUserIdByToken(token: string): Promise<number> {
+        const user = await prismaClient.users.findFirst({
+            where: {
+                token: token,
+            },
+        })
+
+        if (!user) {
+            throw new ResponseError(404, "User not found!")
+        }
+
+        return user.user_id
+    }
 }
