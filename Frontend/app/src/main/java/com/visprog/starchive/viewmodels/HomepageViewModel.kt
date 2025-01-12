@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -19,13 +18,14 @@ import com.visprog.starchive.enums.PrioritiesEnum
 import com.visprog.starchive.models.ErrorModel
 import com.visprog.starchive.models.GeneralResponseModel
 import com.visprog.starchive.repositories.ArticleRepository
+import com.visprog.starchive.repositories.BannerRepository
 import com.visprog.starchive.repositories.BudgetRepository
 import com.visprog.starchive.repositories.UserRepository
-import com.visprog.starchive.uiStates.HomepageDataStatusUIState
-import com.visprog.starchive.uiStates.HomepageUIState
+import com.visprog.starchive.uiStates.ArticleDataStatusUIState
+import com.visprog.starchive.uiStates.BannerDataStatusUIState
+import com.visprog.starchive.uiStates.BudgetDataStatusUIState
 import com.visprog.starchive.uiStates.StringDataStatusUIState
 import kotlinx.coroutines.Dispatchers
-import java.io.IOException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -35,24 +35,28 @@ import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 
 class HomepageViewModel(
         private val budgetRepository: BudgetRepository,
         private val articleRepository: ArticleRepository,
+        private val bannerRepository: BannerRepository,
         private val userRepository: UserRepository
 ) : ViewModel() {
-    private val _homepageUIState = MutableLiveData<HomepageUIState>()
+    private val _budgetDataStatus =
+            MutableStateFlow<BudgetDataStatusUIState>(BudgetDataStatusUIState.Start)
+    val budgetDataStatus: StateFlow<BudgetDataStatusUIState> = _budgetDataStatus
 
-    private val _dataStatus =
-            MutableStateFlow<HomepageDataStatusUIState>(HomepageDataStatusUIState.Start)
-    val dataStatus: StateFlow<HomepageDataStatusUIState> = _dataStatus
+    private val _articleDataStatus =
+            MutableStateFlow<ArticleDataStatusUIState>(ArticleDataStatusUIState.Start)
+    val articleDataStatus: StateFlow<ArticleDataStatusUIState> = _articleDataStatus
+
+    private val _bannerDataStatus =
+            MutableStateFlow<BannerDataStatusUIState>(BannerDataStatusUIState.Start)
+    val bannerDataStatus: StateFlow<BannerDataStatusUIState> = _bannerDataStatus
 
     var logoutStatus: StringDataStatusUIState by mutableStateOf(StringDataStatusUIState.Start)
         private set
-
-    fun getArticles(gameId: Int) {
-        articleRepository.getArticlesByGameId(gameId)
-    }
 
     val token: StateFlow<String> =
             userRepository.currentUserToken.stateIn(
@@ -63,25 +67,77 @@ class HomepageViewModel(
 
     fun getBudgets(token: String, gameId: Int) {
         viewModelScope.launch {
-            _dataStatus.value = HomepageDataStatusUIState.Loading
+            _budgetDataStatus.value = BudgetDataStatusUIState.Loading
             try {
                 withContext(Dispatchers.IO) {
                     val response =
                             budgetRepository.getBudgetByUserIdAndGameId(token, gameId).execute()
                     if (response.isSuccessful) {
                         response.body()?.let {
-                            _dataStatus.value = HomepageDataStatusUIState.Success(it)
+                            _budgetDataStatus.value = BudgetDataStatusUIState.Success(it)
                         }
                                 ?: run {
-                                    _dataStatus.value =
-                                            HomepageDataStatusUIState.Failed("No data available")
+                                    _budgetDataStatus.value =
+                                            BudgetDataStatusUIState.Failed("No data available")
                                 }
                     } else {
-                        _dataStatus.value = HomepageDataStatusUIState.Failed("Failed to fetch data")
+                        _budgetDataStatus.value = BudgetDataStatusUIState.Failed("Failed to fetch data")
                     }
                 }
             } catch (e: Exception) {
-                _dataStatus.value = HomepageDataStatusUIState.Failed(e.message ?: "Unknown error")
+                _budgetDataStatus.value = BudgetDataStatusUIState.Failed(e.message ?: "Unknown error")
+            }
+        }
+    }
+
+    fun getArticles(token: String, gameId: Int) {
+        viewModelScope.launch {
+            _articleDataStatus.value = ArticleDataStatusUIState.Loading
+            try {
+                withContext(Dispatchers.IO) {
+                    val response =
+                            articleRepository.getArticlesByGameId(token, gameId).execute()
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            Log.d("HomepageViewModel", "Articles fetched successfully: $it")
+                            _articleDataStatus.value = ArticleDataStatusUIState.Success(it)
+                        } ?: run {
+                            Log.d("HomepageViewModel", "No data available")
+                            _articleDataStatus.value = ArticleDataStatusUIState.Failed("No data available")
+                        }
+                    } else {
+                        Log.d("HomepageViewModel", "Failed to fetch data: ${response.errorBody()?.string()}")
+                        _articleDataStatus.value = ArticleDataStatusUIState.Failed("Failed to fetch data")
+                    }
+                }
+            } catch (e: Exception) {
+                _articleDataStatus.value = ArticleDataStatusUIState.Failed(e.message ?: "Unknown error")
+            }
+        }
+    }
+
+    fun getBanners(token: String, gameId: Int) {
+        viewModelScope.launch {
+            _bannerDataStatus.value = BannerDataStatusUIState.Loading
+            try {
+                withContext(Dispatchers.IO) {
+                    val response =
+                            bannerRepository.getBannersByGameId(token, gameId).execute()
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            Log.d("HomepageViewModel", "Banners fetched successfully: $it")
+                            _bannerDataStatus.value = BannerDataStatusUIState.Success(it.data)
+                        } ?: run {
+                            Log.d("HomepageViewModel", "No data available")
+                            _bannerDataStatus.value = BannerDataStatusUIState.Failed("No data available")
+                        }
+                    } else {
+                        Log.d("HomepageViewModel", "Failed to fetch data: ${response.errorBody()?.string()}")
+                        _bannerDataStatus.value = BannerDataStatusUIState.Failed("Failed to fetch data")
+                    }
+                }
+            } catch (e: Exception) {
+                _bannerDataStatus.value = BannerDataStatusUIState.Failed(e.message ?: "Unknown error")
             }
         }
     }
@@ -93,7 +149,8 @@ class HomepageViewModel(
                 val articleRepository = application.container.articleRepository
                 val budgetRepository = application.container.budgetRepository
                 val userRepository = application.container.userRepository
-                HomepageViewModel(budgetRepository, articleRepository, userRepository)
+                val bannerRepository = application.container.bannerRepository
+                HomepageViewModel(budgetRepository, articleRepository, bannerRepository, userRepository)
             }
         }
     }
@@ -118,7 +175,7 @@ class HomepageViewModel(
     }
 
     fun clearDataErrorMessage() {
-        _dataStatus.value = HomepageDataStatusUIState.Start
+        _budgetDataStatus.value = BudgetDataStatusUIState.Start
     }
 
     fun logoutUser(token: String, navController: NavHostController) {

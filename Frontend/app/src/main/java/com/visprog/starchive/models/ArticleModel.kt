@@ -9,18 +9,19 @@ data class GetArticleResponse(
 )
 
 data class ArticleModel(
-    val articleId: Int,
+    val article_id: Int,
     val title: String,
     val text: String,
-    val imageUrl: String?,
-    val gameId: Int,
+    val image_url: String?,
+    val game_id: Int,
     val createdDate: String
 )
 
 data class ArticleRequest(
+    val article_id: Int,
     val title: String,
     val text: String,
-    val imageUrl: String?,
-    val gameId: Int,
+    val image_url: String?,
+    val game_id: Int,
     val createdDate: String
 )
