@@ -102,6 +102,15 @@ async function main() {
     },
   });
 
+  await prisma.hardPity.create({
+    data: {
+      user_id: user.user_id,
+      game_id: game.game_id,
+      banner_id: banner1.banner_id,
+      pull_towards_pity: 45, // Example pull towards pity
+    },
+  });
+
   // Create articles
   await prisma.articles.create({
     data: {
