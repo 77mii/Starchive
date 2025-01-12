@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import com.visprog.starchive.ui.theme.Cream
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.visprog.starchive.enums.PagesEnum
 
 @Composable
 fun PullsimBannerView(
@@ -63,7 +64,13 @@ fun PullsimBannerView(
     CommonTemplate(
         currentScreen = "PullSim",
         gameId = bannerId,
-        onNavigate = { screen, id -> navController.navigate(screen) }
+        onNavigate = { screen, gameId ->
+            when (screen) {
+                "Home" -> navController.navigate("${PagesEnum.Home.name}/$gameId")
+                "Budgeting" -> navController.navigate("${PagesEnum.Budgeting.name}/$gameId")
+                "Pullsim" -> navController.navigate("${PagesEnum.Pullsim.name}/$gameId")
+            }
+        }
     ) {
         Column(
             modifier = Modifier
@@ -73,7 +80,8 @@ fun PullsimBannerView(
             Text(text = "Pullsim Banner View for Banner ID: $bannerId", color = Cream)
             LazyColumn {
                 items(bannerItems) { (bannerItem, item) ->
-                    Text(text = "Item Name: ${item?.itemName ?: "Unknown"}, Acquire Rate: ${bannerItem.acquireRate}", color = Cream)
+                    val acquireRatePercentage = bannerItem.acquireRate * 100
+                    Text(text = "Item Name: ${item?.itemName ?: "Unknown"}, Acquire Rate: ${"%.2f".format(acquireRatePercentage)}%", color = Cream)
                 }
             }
             

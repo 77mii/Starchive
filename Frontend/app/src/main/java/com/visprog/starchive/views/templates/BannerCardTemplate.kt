@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.visprog.starchive.ui.theme.Cream
 
 @Composable
 fun BannerCardTemplate(
@@ -44,9 +45,12 @@ fun BannerCardTemplate(
             .fillMaxWidth()
             .padding(8.dp)
             .clip(RoundedCornerShape(10.dp))
-            .background(Color.White)
+            .background(Cream)
             .clickable { onCardClick() },
-        elevation = CardDefaults.cardElevation(4.dp)
+        elevation = CardDefaults.cardElevation(4.dp),
+        colors = CardDefaults.cardColors(
+            Cream)
+
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
