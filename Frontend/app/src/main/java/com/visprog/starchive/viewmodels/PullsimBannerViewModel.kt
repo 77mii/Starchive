@@ -199,10 +199,11 @@ class PullsimBannerViewModel(
                     val gachaResults = mutableListOf<ItemModel>()
                     var highestRarityAcquired = false
 
-                    repeat(10) {
+                    repeat(10) { pullIndex ->
                         val randomValue = Random.nextFloat()
-                        val selectedItem = if (currentPity >= 90) {
-                            // Guaranteed rare item due to pity
+                        val selectedItem = if (currentPity >= 90 && !highestRarityAcquired) {
+                            // Guaranteed rare item due to pity, but only once
+                            highestRarityAcquired = true
                             bannerItemsWithDetails.filter { it.second?.rarity == bannerItemsWithDetails.maxOfOrNull { it.second?.rarity ?: 0 } }.randomOrNull()?.second
                         } else {
                             // Regular gacha pull with dynamic rarity
@@ -213,12 +214,11 @@ class PullsimBannerViewModel(
 
                         selectedItem?.let { 
                             gachaResults.add(it)
-                            if (it.rarity == bannerItemsWithDetails.maxOfOrNull { it.second?.rarity ?: 0 }) {
-                                highestRarityAcquired = true
-                            }
                         }
                     }
 
+                    // Clear old gacha results and add new ones
+                    _gachaResults.value = emptyList()
                     _gachaResults.value = gachaResults
 
                     // Update pity count
