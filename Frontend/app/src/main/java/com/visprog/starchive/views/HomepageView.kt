@@ -139,8 +139,7 @@ fun HomepageView(
                                             )
                                         }
                                         Column (
-                                            modifier = Modifier.fillMaxWidth(),
-                                            horizontalAlignment = Alignment.Start
+                                            modifier = Modifier.fillMaxWidth()
                                         ) {
                                             Button(
                                                 onClick = { homepageViewModel.logoutUser(token, navController) },
