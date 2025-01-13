@@ -41,6 +41,7 @@ import com.visprog.starchive.views.templates.AuthenticationButton
 import com.visprog.starchive.views.templates.AuthenticationOutlinedTextField
 import com.visprog.starchive.views.templates.AuthenticationQuestion
 import com.visprog.starchive.views.templates.PasswordOutlinedTextField
+import com.visprog.starchive.views.templates.CommonTemplateWithoutNavBar
 
 @Composable
 fun LoginView(
@@ -60,107 +61,114 @@ fun LoginView(
             authenticationViewModel.clearErrorMessage()
         }
     }
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.SpaceEvenly,
+
+    CommonTemplateWithoutNavBar(
+        currentScreen = "Login",
+        gameId = 0,
+        onNavigate = { _, _ -> }
     ) {
         Column(
-            horizontalAlignment = Alignment.Start
+            modifier = modifier,
+            verticalArrangement = Arrangement.SpaceEvenly,
         ) {
-            Text(
-                text = "WELCOME BACK TO",
-                fontSize = 35.sp,
-                fontWeight = FontWeight.Light
-            )
+            Column(
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = "WELCOME BACK TO",
+                    fontSize = 35.sp,
+                    fontWeight = FontWeight.Light
+                )
 
-            Text(
-                text = "TODO LIST",
-                fontSize = 35.sp,
-                fontWeight = FontWeight.SemiBold
+                Text(
+                    text = "TODO LIST",
+                    fontSize = 35.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                AuthenticationOutlinedTextField(
+                    inputValue = authenticationViewModel.usernameInput,
+                    onInputValueChange = {
+                        authenticationViewModel.changeUsernameInput(it)
+                        authenticationViewModel.checkRegisterForm()
+                    },
+                    labelText = stringResource(id = R.string.usernameText),
+                    placeholderText = stringResource(id = R.string.usernameText),
+                    leadingIconSrc = painterResource(id = R.drawable.ic_username),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    keyboardType = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    ),
+                    onKeyboardNext = KeyboardActions(
+                        onNext = {
+                            focusManager.moveFocus(FocusDirection.Down)
+                        }
+                    )
+                )
+
+                Spacer(modifier = Modifier.padding(5.dp))
+
+                PasswordOutlinedTextField(
+                    passwordInput = authenticationViewModel.passwordInput,
+                    onPasswordInputValueChange = {
+                        authenticationViewModel.changePasswordInput(it)
+                        authenticationViewModel.checkLoginForm()
+                    },
+                    passwordVisibilityIcon = painterResource(id = loginUIState.passwordVisibilityIcon),
+                    labelText = stringResource(id = R.string.passwordText),
+                    placeholderText = stringResource(id = R.string.passwordText),
+                    onTrailingIconClick = {
+                        authenticationViewModel.changePasswordVisibility()
+                    },
+                    passwordVisibility = loginUIState.passwordVisibility,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    keyboardImeAction = ImeAction.None,
+                    onKeyboardNext = KeyboardActions(
+                        onDone = null
+                    )
+                )
+
+                AuthenticationButton(
+                    buttonText = stringResource(id = R.string.loginText),
+                    onButtonClick = {
+                        authenticationViewModel.loginUser(navController = navController)
+                    },
+                    buttonModifier = Modifier
+                        .padding(top = 30.dp),
+                    textModifier = Modifier
+                        .padding(vertical = 5.dp, horizontal = 15.dp),
+                    buttonEnabled = loginUIState.buttonEnabled,
+                    buttonColor = authenticationViewModel.checkButtonEnabled(loginUIState.buttonEnabled),
+                    userDataStatusUIState = authenticationViewModel.dataStatus,
+                    loadingBarModifier = Modifier
+                        .padding(top = 30.dp)
+                        .size(40.dp)
+                )
+            }
+
+            AuthenticationQuestion(
+                questionText = stringResource(id = R.string.don_t_have_an_account_yet_text),
+                actionText = stringResource(id = R.string.sign_up_text),
+                onActionTextClicked = {
+                    authenticationViewModel.resetViewModel()
+                    navController.navigate(PagesEnum.Signup.name) {
+                        popUpTo(PagesEnum.Login.name) {
+                            inclusive = true
+                        }
+                    }
+                },
+                rowModifier = Modifier
+                    .align(Alignment.CenterHorizontally),
             )
         }
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            AuthenticationOutlinedTextField(
-                inputValue = authenticationViewModel.usernameInput,
-                onInputValueChange = {
-                    authenticationViewModel.changeUsernameInput(it)
-                    authenticationViewModel.checkRegisterForm()
-                },
-                labelText = stringResource(id = R.string.usernameText),
-                placeholderText = stringResource(id = R.string.usernameText),
-                leadingIconSrc = painterResource(id = R.drawable.ic_username),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                keyboardType = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                onKeyboardNext = KeyboardActions(
-                    onNext = {
-                        focusManager.moveFocus(FocusDirection.Down)
-                    }
-                )
-            )
-
-            Spacer(modifier = Modifier.padding(5.dp))
-
-            PasswordOutlinedTextField(
-                passwordInput = authenticationViewModel.passwordInput,
-                onPasswordInputValueChange = {
-                    authenticationViewModel.changePasswordInput(it)
-                    authenticationViewModel.checkLoginForm()
-                },
-                passwordVisibilityIcon = painterResource(id = loginUIState.passwordVisibilityIcon),
-                labelText = stringResource(id = R.string.passwordText),
-                placeholderText = stringResource(id = R.string.passwordText),
-                onTrailingIconClick = {
-                    authenticationViewModel.changePasswordVisibility()
-                },
-                passwordVisibility = loginUIState.passwordVisibility,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                keyboardImeAction = ImeAction.None,
-                onKeyboardNext = KeyboardActions(
-                    onDone = null
-                )
-            )
-
-            AuthenticationButton(
-                buttonText = stringResource(id = R.string.loginText),
-                onButtonClick = {
-                    authenticationViewModel.loginUser(navController = navController)
-                },
-                buttonModifier = Modifier
-                    .padding(top = 30.dp),
-                textModifier = Modifier
-                    .padding(vertical = 5.dp, horizontal = 15.dp),
-                buttonEnabled = loginUIState.buttonEnabled,
-                buttonColor = authenticationViewModel.checkButtonEnabled(loginUIState.buttonEnabled),
-                userDataStatusUIState = authenticationViewModel.dataStatus,
-                loadingBarModifier = Modifier
-                    .padding(top = 30.dp)
-                    .size(40.dp)
-            )
-        }
-
-        AuthenticationQuestion(
-            questionText = stringResource(id = R.string.don_t_have_an_account_yet_text),
-            actionText = stringResource(id = R.string.sign_up_text),
-            onActionTextClicked = {
-                authenticationViewModel.resetViewModel()
-                navController.navigate(PagesEnum.Signup.name) {
-                    popUpTo(PagesEnum.Login.name) {
-                        inclusive = true
-                    }
-                }
-            },
-            rowModifier = Modifier
-                .align(Alignment.CenterHorizontally),
-        )
     }
 }
 
