@@ -22,6 +22,7 @@ apiRouter.get("/api/users/:token", UserController.getUserIdByToken) // New route
 // plan
 apiRouter.post("/api/plans", PlanController.create)
 apiRouter.get("/api/plans", PlanController.getByUserId)
+apiRouter.get("/api/plans/:planId(\\d+)", PlanController.getById)
 apiRouter.delete("/api/plans/:planId(\\d+)", PlanController.delete)
 
 // game

@@ -66,7 +66,7 @@ fun PullsimBannerView(
         gameId = bannerId,
         onNavigate = { screen, gameId ->
             when (screen) {
-                "Home" -> navController.navigate("${PagesEnum.Homepage.name}/$gameId")
+                "Homepage" -> navController.navigate("${PagesEnum.Homepage.name}/$gameId")
                 "Budgeting" -> navController.navigate("${PagesEnum.Budgeting.name}/$gameId")
                 "Pullsim" -> navController.navigate("${PagesEnum.Pullsim.name}/$gameId")
             }

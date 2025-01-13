@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.visprog.starchive.enums.PagesEnum
 import com.visprog.starchive.models.BudgetModel
@@ -41,7 +42,7 @@ fun BudgetingView(
     val dataStatus by budgetingViewModel.dataStatus.collectAsStateWithLifecycle()
     val gameData by budgetingViewModel.gameData.collectAsStateWithLifecycle()
 
-    var showDialog by remember { mutableStateOf(false) }    
+    var showDialog by remember { mutableStateOf(false) }
     var isDeposit by remember { mutableStateOf(false) }
 
     var budgetAmount by remember { mutableStateOf("") }
@@ -50,12 +51,12 @@ fun BudgetingView(
 
 
 
-    LaunchedEffect(Unit) { 
+    LaunchedEffect(Unit) {
         budgetingViewModel.getBudgets(token, gameId)
         budgetingViewModel.getGame(token, gameId)
     }
 
-    if(showDialog) {
+    if (showDialog) {
         when (gameData) {
             is GameDataStatusUIState.Success -> {
                 val game = (gameData as GameDataStatusUIState.Success).data
@@ -80,11 +81,11 @@ fun BudgetingView(
                             OutlinedTextField(
                                 value = budgetAmount,
                                 onValueChange = { budgetAmount = it },
-                                label = { 
+                                label = {
                                     Text(
                                         "Real Cash Amount",
                                         fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
-                                    ) 
+                                    )
                                 },
                                 colors = OutlinedTextFieldDefaults.colors(
                                     focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -101,11 +102,11 @@ fun BudgetingView(
                             OutlinedTextField(
                                 value = currencyAmount,
                                 onValueChange = { currencyAmount = it },
-                                label = { 
+                                label = {
                                     Text(
                                         "${game.data.currencyName ?: "Currency"} Amount",
                                         fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
-                                    ) 
+                                    )
                                 },
                                 colors = OutlinedTextFieldDefaults.colors(
                                     focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -122,11 +123,11 @@ fun BudgetingView(
                             OutlinedTextField(
                                 value = ticketsAmount,
                                 onValueChange = { ticketsAmount = it },
-                                label = { 
+                                label = {
                                     Text(
                                         "${game.data.ticketsName ?: "Tickets"} Amount",
                                         fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
-                                    ) 
+                                    )
                                 },
                                 colors = OutlinedTextFieldDefaults.colors(
                                     focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -146,7 +147,8 @@ fun BudgetingView(
                             onClick = {
                                 when (dataStatus) {
                                     is BudgetDataStatusUIState.Success -> {
-                                        val currentBudget = (dataStatus as BudgetDataStatusUIState.Success).data.data
+                                        val currentBudget =
+                                            (dataStatus as BudgetDataStatusUIState.Success).data.data
 
                                         // Refresh budget data first
                                         budgetingViewModel.getBudgets(token, gameId)
@@ -157,24 +159,56 @@ fun BudgetingView(
                                         val ticketsValue = ticketsAmount.toFloatOrNull() ?: 0f
 
                                         if (currentBudget.budgetId > 0) {
+                                            // Validation for withdrawal
+                                            if (!isDeposit) {
+                                                if (budgetValue > currentBudget.remaining_budget ||
+                                                    currencyValue > currentBudget.remaining_currency ||
+                                                    ticketsValue > currentBudget.remaining_tickets
+                                                ) {
+                                                    // Cannot withdraw more than remaining amounts
+                                                    return@Button
+                                                }
+                                            }
+
                                             val updatedBudget = BudgetModel(
                                                 budgetId = currentBudget.budgetId,
                                                 gameId = currentBudget.gameId,
                                                 allocated_budget = if (isDeposit)
                                                     currentBudget.allocated_budget + budgetValue
                                                 else
-                                                    (currentBudget.allocated_budget - budgetValue).coerceAtLeast(0f),
+                                                    (currentBudget.allocated_budget - budgetValue).coerceAtLeast(
+                                                        0f
+                                                    ),
                                                 allocated_currency = if (isDeposit)
                                                     currentBudget.allocated_currency + currencyValue
                                                 else
-                                                    (currentBudget.allocated_currency - currencyValue).coerceAtLeast(0f),
+                                                    (currentBudget.allocated_currency - currencyValue).coerceAtLeast(
+                                                        0f
+                                                    ),
                                                 allocated_tickets = if (isDeposit)
                                                     currentBudget.allocated_tickets + ticketsValue
                                                 else
-                                                    (currentBudget.allocated_tickets - ticketsValue).coerceAtLeast(0f),
-                                                remaining_budget = currentBudget.remaining_budget,
-                                                remaining_currency = currentBudget.remaining_currency,
-                                                remaining_tickets = currentBudget.remaining_tickets
+                                                    (currentBudget.allocated_tickets - ticketsValue).coerceAtLeast(
+                                                        0f
+                                                    ),
+                                                remaining_budget = if (isDeposit)
+                                                    currentBudget.remaining_budget + budgetValue
+                                                else
+                                                    (currentBudget.remaining_budget - budgetValue).coerceAtLeast(
+                                                        0f
+                                                    ),
+                                                remaining_currency = if (isDeposit)
+                                                    currentBudget.remaining_currency + currencyValue
+                                                else
+                                                    (currentBudget.remaining_currency - currencyValue).coerceAtLeast(
+                                                        0f
+                                                    ),
+                                                remaining_tickets = if (isDeposit)
+                                                    currentBudget.remaining_tickets + ticketsValue
+                                                else
+                                                    (currentBudget.remaining_tickets - ticketsValue).coerceAtLeast(
+                                                        0f
+                                                    )
                                             )
 
                                             budgetingViewModel.updateBudget(
@@ -188,9 +222,13 @@ fun BudgetingView(
                                             currencyAmount = ""
                                             ticketsAmount = ""
                                         } else {
-                                            Log.e("BudgetingView", "Invalid budget ID: ${currentBudget.budgetId}")
+                                            Log.e(
+                                                "BudgetingView",
+                                                "Invalid budget ID: ${currentBudget.budgetId}"
+                                            )
                                         }
                                     }
+
                                     else -> {
                                         Log.e("BudgetingView", "Failed to update budget data")
                                     }
@@ -201,9 +239,9 @@ fun BudgetingView(
                                     ticketsAmount.isNotEmpty(),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onPrimary,
-                                disabledContainerColor = MaterialTheme.colorScheme.outline,
-                                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                                contentColor = MaterialTheme.colorScheme.secondary,
+                                disabledContainerColor = Color.LightGray,
+                                disabledContentColor = MaterialTheme.colorScheme.primary
                             ),
                             shape = RoundedCornerShape(8.dp)
                         ) {
@@ -230,6 +268,7 @@ fun BudgetingView(
                     }
                 )
             }
+
             else -> {
                 Log.e("BudgetingView", "Failed to load game data")
             }
@@ -250,9 +289,11 @@ fun BudgetingView(
         when (gameData) {
             is GameDataStatusUIState.Success -> {
                 val game = (gameData as GameDataStatusUIState.Success).data
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 32.dp)) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 32.dp)
+                ) {
                     when (dataStatus) {
                         is BudgetDataStatusUIState.Success -> {
                             val budget = (dataStatus as BudgetDataStatusUIState.Success).data
@@ -321,7 +362,8 @@ fun BudgetingView(
                                             Spacer(modifier = Modifier.height(8.dp))
 
                                             Text(
-                                                text = game.data.currencyName?.uppercase() ?: "Currency",
+                                                text = game.data.currencyName?.uppercase()
+                                                    ?: "Currency",
                                                 fontSize = 20.sp,
                                                 fontWeight = FontWeight.Normal,
                                                 fontFamily =
@@ -354,7 +396,8 @@ fun BudgetingView(
                                             Spacer(modifier = Modifier.height(8.dp))
 
                                             Text(
-                                                text = game.data.ticketsName?.uppercase() ?: "Tickets",
+                                                text = game.data.ticketsName?.uppercase()
+                                                    ?: "Tickets",
                                                 fontSize = 20.sp,
                                                 fontWeight = FontWeight.Normal,
                                                 fontFamily =
@@ -448,6 +491,7 @@ fun BudgetingView(
                                 }
                             }
                         }
+
                         is BudgetDataStatusUIState.Failed -> {
                             Text(
                                 text = "Failed to load budget data",
@@ -455,6 +499,7 @@ fun BudgetingView(
                                 modifier = Modifier.align(Alignment.CenterHorizontally)
                             )
                         }
+
                         else -> {
                             CircularProgressIndicator(
                                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -471,7 +516,7 @@ fun BudgetingView(
                             .background(MaterialTheme.colorScheme.secondary)
                     ) {
                         Button(
-                            onClick = { /* TODO: Change to View Plans view */ },
+                            onClick = { navController.navigate("${PagesEnum.Plans.name}/$gameId") },
                             modifier = Modifier
                                 .fillMaxSize(),
                             colors = ButtonDefaults.buttonColors(

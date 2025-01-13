@@ -61,4 +61,19 @@ export class PlanService {
             }
         })
     }
+
+    static async getById(user: Users, planId: number): Promise<PlanResponse> {
+        const plan = await prismaClient.plans.findUnique({
+            where: {
+                plan_id: planId,
+                user_id: user.user_id
+            }
+        })
+
+        if (!plan) {
+            throw new ResponseError(404, "Plan not found")
+        }
+
+        return toPlanResponse(plan)
+    }
 }

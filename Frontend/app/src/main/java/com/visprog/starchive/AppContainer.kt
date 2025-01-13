@@ -25,6 +25,7 @@ interface AppContainer {
     val bannerItemRepository: BannerItemRepository
     val itemRepository: ItemRepository
     val pityRepository: PityRepository
+    val planRepository: PlanRepository
 }
 
 class DefaultAppContainer(private val userDataStore: DataStore<Preferences>): AppContainer {
@@ -72,6 +73,10 @@ class DefaultAppContainer(private val userDataStore: DataStore<Preferences>): Ap
         val retrofit = initRetrofit()
         retrofit.create(PityService::class.java)
     }
+    private val planRetrofitService: PlanService by lazy {
+        val retrofit = initRetrofit()
+        retrofit.create(PlanService::class.java)
+    }
 
     // REPOSITORY INITIALIZATION
     override val gameRepository: GameRepository by lazy {
@@ -103,6 +108,9 @@ class DefaultAppContainer(private val userDataStore: DataStore<Preferences>): Ap
     }
     override val pityRepository: PityRepository by lazy {
         NetworkPityRepository(pityRetrofitService)
+    }
+    override val planRepository: PlanRepository by lazy {
+        NetworkPlanRepository(planRetrofitService)
     }
 
     private fun initRetrofit(): Retrofit {

@@ -1,32 +1,16 @@
 package com.visprog.starchive
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
-import androidx.compose.runtime.Composable
-import androidx.core.view.WindowCompat
-
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.visprog.starchive.StarchiveApplication
-
-import com.visprog.starchive.views.StarchiveApp
+import androidx.core.view.WindowCompat
 import com.visprog.starchive.ui.theme.StarchiveTheme
+import com.visprog.starchive.views.StarchiveApp
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("NewApi")
@@ -35,9 +19,14 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             StarchiveTheme(dynamicColor = false) {
-            /*StarchiveApplication()*/
-            StarchiveApp()
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .systemBarsPadding()
+                ) {
+                    StarchiveApp()
                 }
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ import com.visprog.starchive.R
 
 val Montserrat = FontFamily(
     Font(R.font.montserrat_variable, FontWeight.Normal),
-    Font(R.font.montserrat_variable, FontWeight.Bold),
+    Font(R.font.montserrat_bold, FontWeight.Bold),
     Font(R.font.montserrat_italic_variable, FontWeight.Normal, FontStyle.Italic),
 )
 
@@ -32,7 +32,7 @@ val Typography = Typography(
     ),
     titleLarge = TextStyle(
         fontFamily = Montserrat,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
