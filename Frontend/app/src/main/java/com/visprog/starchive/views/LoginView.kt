@@ -83,7 +83,7 @@ fun LoginView(
                 )
 
                 Text(
-                    text = "TODO LIST",
+                    text = "STARCHIVE",
                     fontSize = 35.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Cream
