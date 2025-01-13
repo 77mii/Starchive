@@ -1,8 +1,16 @@
 package com.visprog.starchive.views.templates
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -10,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,6 +33,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.visprog.starchive.R
 import com.visprog.starchive.uiStates.AuthenticationStatusUIState
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import com.visprog.starchive.ui.theme.StarchiveTheme
+import com.visprog.starchive.ui.theme.Cream
+import com.visprog.starchive.ui.theme.DarkBlue
 
 @Composable
 fun AuthenticationOutlinedTextField(
@@ -42,15 +58,19 @@ fun AuthenticationOutlinedTextField(
         singleLine = true,
         label = {
             Text(
-                text = labelText
+                text = labelText,
+                color = DarkBlue
             )
         },
         placeholder = {
             Text(
-                text = placeholderText
+                text = placeholderText,
+                color = DarkBlue
             )
         },
-        modifier = modifier,
+        modifier = modifier
+            .background(Cream, RoundedCornerShape(15.dp))
+            .fillMaxWidth(),
         shape = RoundedCornerShape(size = 15.dp),
         leadingIcon = {
             Image(
@@ -59,7 +79,13 @@ fun AuthenticationOutlinedTextField(
             )
         },
         keyboardOptions = keyboardType,
-        keyboardActions = onKeyboardNext
+        keyboardActions = onKeyboardNext,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = DarkBlue,
+            unfocusedBorderColor = DarkBlue,
+            cursorColor = DarkBlue
+        )
+            
     )
 }
 
@@ -82,7 +108,8 @@ fun PasswordOutlinedTextField(
         singleLine = true,
         label = {
             Text(
-                text = labelText
+                text = labelText,
+                color = DarkBlue
             )
         },
         trailingIcon = {
@@ -97,11 +124,14 @@ fun PasswordOutlinedTextField(
         },
         placeholder = {
             Text(
-                text = placeholderText
+                text = placeholderText,
+                color = DarkBlue
             )
         },
         visualTransformation = passwordVisibility,
-        modifier = modifier,
+        modifier = modifier
+            .background(Cream, RoundedCornerShape(15.dp))
+            .fillMaxWidth(),
         shape = RoundedCornerShape(size = 15.dp),
         leadingIcon = {
             Image(
@@ -113,7 +143,12 @@ fun PasswordOutlinedTextField(
             keyboardType = KeyboardType.Password,
             imeAction = keyboardImeAction
         ),
-        keyboardActions = onKeyboardNext
+        keyboardActions = onKeyboardNext,
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = DarkBlue,
+            unfocusedBorderColor = DarkBlue,
+            cursorColor = DarkBlue
+        )
     )
 }
 
@@ -131,7 +166,7 @@ fun AuthenticationButton(
     when(userDataStatusUIState) {
         is AuthenticationStatusUIState.Loading -> CircleLoadingTemplate(
             modifier = loadingBarModifier,
-            color = Color.Blue,
+            color = DarkBlue,
             trackColor = Color.Transparent
         )
         else -> Button(
@@ -144,7 +179,8 @@ fun AuthenticationButton(
                 text = buttonText,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold,
-                modifier = textModifier
+                modifier = textModifier,
+                color = DarkBlue
             )
         }
     }
@@ -162,16 +198,72 @@ fun AuthenticationQuestion(
         modifier = rowModifier
     ) {
         Text(
-            text = questionText
+            text = questionText,
+            color = DarkBlue
         )
 
         Text(
             text = actionText,
-            color = Color.Blue,
+            color = Cream,
             modifier = Modifier
                 .clickable {
                     onActionTextClicked()
                 }
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AuthenticationTemplatePreview() {
+    StarchiveTheme {
+        Column(
+            modifier = Modifier
+                
+                .fillMaxSize()
+
+                .padding(16.dp)
+                ,
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AuthenticationOutlinedTextField(
+                inputValue = "Username",
+                onInputValueChange = {},
+                labelText = "Username",
+                placeholderText = "Enter your username",
+                leadingIconSrc = painterResource(id = R.drawable.ic_username),
+                keyboardType = KeyboardOptions.Default,
+                onKeyboardNext = KeyboardActions.Default
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            PasswordOutlinedTextField(
+                passwordInput = "Password",
+                onPasswordInputValueChange = {},
+                passwordVisibilityIcon = painterResource(id = R.drawable.ic_password_visible),
+                labelText = "Password",
+                placeholderText = "Enter your password",
+                onTrailingIconClick = {},
+                passwordVisibility = VisualTransformation.None,
+                onKeyboardNext = KeyboardActions.Default,
+                keyboardImeAction = ImeAction.Done
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            AuthenticationButton(
+                buttonText = "Login",
+                onButtonClick = {},
+                buttonEnabled = true,
+                buttonColor = Cream,
+                userDataStatusUIState = AuthenticationStatusUIState.Loading,
+                loadingBarModifier = Modifier.size(40.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            AuthenticationQuestion(
+                questionText = "Don't have an account?",
+                actionText = "Sign Up",
+                onActionTextClicked = {},
+                rowModifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
     }
 }

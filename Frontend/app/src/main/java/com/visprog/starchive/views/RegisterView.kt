@@ -42,6 +42,7 @@ import com.visprog.starchive.views.templates.AuthenticationOutlinedTextField
 import com.visprog.starchive.views.templates.AuthenticationQuestion
 import com.visprog.starchive.views.templates.PasswordOutlinedTextField
 import com.visprog.starchive.views.templates.CommonTemplateWithoutNavBar
+import com.visprog.starchive.ui.theme.Cream
 
 @Composable
 fun RegisterView(
@@ -76,13 +77,15 @@ fun RegisterView(
                 Text(
                     text = "WELCOME TO",
                     fontSize = 35.sp,
-                    fontWeight = FontWeight.Light
+                    fontWeight = FontWeight.Light,
+                    color = Cream
                 )
 
                 Text(
                     text = "Starchive",
                     fontSize = 35.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Cream
                 )
             }
 
@@ -170,7 +173,8 @@ fun RegisterView(
                     }
                 },
                 rowModifier = Modifier
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.CenterHorizontally),
+
             )
         }
     }

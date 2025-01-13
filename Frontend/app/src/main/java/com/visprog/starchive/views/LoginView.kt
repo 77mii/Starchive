@@ -42,6 +42,7 @@ import com.visprog.starchive.views.templates.AuthenticationOutlinedTextField
 import com.visprog.starchive.views.templates.AuthenticationQuestion
 import com.visprog.starchive.views.templates.PasswordOutlinedTextField
 import com.visprog.starchive.views.templates.CommonTemplateWithoutNavBar
+import com.visprog.starchive.ui.theme.Cream
 
 @Composable
 fun LoginView(
@@ -77,13 +78,15 @@ fun LoginView(
                 Text(
                     text = "WELCOME BACK TO",
                     fontSize = 35.sp,
-                    fontWeight = FontWeight.Light
+                    fontWeight = FontWeight.Light,
+                    color = Cream
                 )
 
                 Text(
                     text = "TODO LIST",
                     fontSize = 35.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    color = Cream
                 )
             }
 
@@ -167,6 +170,7 @@ fun LoginView(
                 },
                 rowModifier = Modifier
                     .align(Alignment.CenterHorizontally),
+
             )
         }
     }
