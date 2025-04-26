@@ -3,7 +3,8 @@ The Project for my Group Assignment ALP, it is a financial app for people who ar
 
 
 ## Information
-This project was done using Android studio IDE with Kotlin as the frontend, expressJS as the backend, and postgres as the database
+This project was done using Android studio IDE with Kotlin as the frontend, expressJS as the backend, and postgres as the database.
+With this project we have learned Valuable knowledge of Mobile Development in android and how to connect Mobile applications to a database through an expressJS backend
 
 # In this project I (Joe A.) focused on implementing the features of game selection and Gacha simulation, 
 
